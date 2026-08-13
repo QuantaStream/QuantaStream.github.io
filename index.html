@@ -292,6 +292,58 @@
       font-weight: 760;
     }
 
+    .about {
+      margin-top: 72px;
+      padding: clamp(28px, 5vw, 54px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(8, 199, 223, 0.08), rgba(12, 20, 34, 0.78) 42%, rgba(65, 214, 125, 0.06));
+      box-shadow: var(--shadow);
+      scroll-margin-top: 24px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(190px, 0.35fr) minmax(0, 1fr);
+      gap: clamp(28px, 5vw, 64px);
+    }
+
+    .about-label {
+      margin: 0 0 10px;
+      color: #a9f2ff;
+      font-size: 13px;
+      font-weight: 760;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .about h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.05;
+    }
+
+    .about-role {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .about-copy {
+      color: var(--soft);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .about-copy p {
+      margin: 0 0 18px;
+    }
+
+    .about-copy p:last-child {
+      margin-bottom: 0;
+    }
+
     .closing {
       margin-top: 56px;
       padding-top: 24px;
@@ -310,6 +362,10 @@
 
       .visual {
         order: -1;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -352,6 +408,7 @@
         <span>QuantaStream</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
+        <a href="#about">About Guy</a>
         <a href="mailto:info@quantastream.org">Contact</a>
         <a href="https://github.com/QuantaStream">GitHub</a>
       </nav>
@@ -414,6 +471,22 @@
       </aside>
     </main>
 
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="about-grid">
+        <div>
+          <p class="about-label">About the founder</p>
+          <h2 id="about-title">Guy Molinari</h2>
+          <p class="about-role">Principal Engineer and Founder<br>Playa Zancudo, Costa Rica</p>
+        </div>
+        <div class="about-copy">
+          <p>I spent 21 years at The Walt Disney Company as a software engineer, architect, and engineering leader. My early work included Disney's Tea language compiler and Barista servlet container, helping migrate Disney web applications to Apache Tomcat, and leading development of FastCast - an asynchronous server cluster designed to support approximately 20 million concurrent connections for ESPN live-score feeds and GameCast sports visualizations.</p>
+          <p>In 2019, I moved to Disney's Data Platforms organization and began developing bitmap-based technology for managing and querying advertising revenue and inventory data. I am the sole inventor of U.S. Patent 12,086,136, <em>Techniques for Executing Join Operations Using Bitmap Indices</em>, and a named inventor on multiple other U.S. patents covering bitmap-oriented data management, adaptive caching, and related technologies.</p>
+          <p>In 2021, I became Senior Manager of Data Platforms Engineering at Disney Streaming, where I led a team of 13 engineers developing the Data Activation Framework.</p>
+          <p>I retired from Disney in 2025, but not from engineering. I founded QuantaStream to continue exploring an idea that began during my time at Disney: that bitmap and bit-sliced indexing can provide a fundamentally different foundation for distributed SQL, real-time ingestion, and analytical query processing.</p>
+        </div>
+      </div>
+    </section>
+
     <footer class="closing">
       <span>QuantaStream is being prepared for a future public release.</span>
       <span>More soon.</span>
@@ -421,3 +494,4 @@
   </div>
 </body>
 </html>
+
