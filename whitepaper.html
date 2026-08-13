@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bitmap-Native Analytical SQL | QuantaStream</title>
+  <meta name="description" content="The engineering narrative and architectural thesis behind QuantaStream's bitmap-native analytical SQL engine.">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f5f8ff;
+      --muted: #aab7c7;
+      --soft: #d8e2ef;
+      --line: rgba(203, 218, 235, 0.18);
+      --panel: rgba(12, 20, 34, 0.78);
+      --cyan: #08c7df;
+      --green: #41d67d;
+      --gold: #f7c948;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(8, 199, 223, 0.16), transparent 24%),
+        radial-gradient(circle at 86% 18%, rgba(65, 214, 125, 0.10), transparent 22%),
+        linear-gradient(135deg, #060a12 0%, #0a1020 48%, #111827 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent 60%);
+    }
+    a { color: #8deeff; text-underline-offset: 3px; }
+    .shell { position: relative; z-index: 1; width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 28px 0 36px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { color: var(--ink); text-decoration: none; font-size: 22px; font-weight: 760; }
+    .back {
+      color: var(--soft);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 14px;
+    }
+    .hero { max-width: 860px; padding: 72px 0 48px; }
+    .kicker { margin: 0 0 14px; color: #a9f2ff; font-size: 13px; font-weight: 760; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(42px, 7vw, 76px); line-height: .98; letter-spacing: -.03em; }
+    .layout { display: grid; grid-template-columns: 260px minmax(0, 760px); gap: 56px; align-items: start; padding-bottom: 80px; }
+    #TOC {
+      position: sticky;
+      top: 24px;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+    }
+    #TOC::before { content: "Contents"; display: block; margin-bottom: 12px; color: var(--ink); font-size: 13px; font-weight: 760; letter-spacing: .08em; text-transform: uppercase; }
+    #TOC ul { margin: 0; padding: 0; list-style: none; }
+    #TOC li + li { margin-top: 9px; }
+    #TOC a { color: var(--muted); text-decoration: none; font-size: 13px; line-height: 1.35; }
+    #TOC a:hover { color: var(--cyan); }
+    article { min-width: 0; color: var(--soft); font-size: 17px; line-height: 1.72; }
+    article h2 { scroll-margin-top: 24px; margin: 64px 0 18px; color: var(--ink); font-size: clamp(28px, 4vw, 38px); line-height: 1.15; }
+    article h2:first-child { margin-top: 0; }
+    article p { margin: 0 0 20px; }
+    article ul, article ol { margin: 0 0 24px; padding-left: 24px; }
+    article li { margin: 7px 0; }
+    article blockquote { margin: 30px 0; padding: 20px 24px; border-left: 4px solid var(--cyan); border-radius: 0 16px 16px 0; background: rgba(8, 199, 223, 0.08); color: var(--ink); font-size: 20px; font-weight: 680; }
+    article blockquote p { margin: 0; }
+    article pre { overflow-x: auto; margin: 24px 0; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: rgba(4, 9, 18, 0.92); color: #c9f7dc; font-size: 14px; line-height: 1.55; }
+    article code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    article :not(pre) > code { padding: 2px 6px; border-radius: 6px; background: rgba(255, 255, 255, 0.08); color: #b8f4ff; font-size: .9em; }
+    article dl { margin: 0 0 28px; }
+    article dt { margin-top: 18px; color: var(--ink); font-family: "SFMono-Regular", Consolas, monospace; font-weight: 760; }
+    article dd { margin: 5px 0 0 20px; color: var(--muted); }
+    article hr { margin: 48px 0; border: 0; border-top: 1px solid var(--line); }
+    footer { padding: 26px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    @media (max-width: 880px) {
+      .layout { grid-template-columns: 1fr; gap: 36px; }
+      #TOC { position: static; max-height: none; }
+    }
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 28px, 1160px); }
+      header { align-items: flex-start; flex-direction: column; }
+      .hero { padding-top: 48px; }
+      article { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="index.html">QuantaStream</a>
+      <a class="back" href="index.html">Back to home</a>
+    </header>
+    <section class="hero">
+      <p class="kicker">Engineering white paper</p>
+      <h1>Bitmap-Native Analytical SQL</h1>
+    </section>
+    <div class="layout">
+      <ul>
+      <li><a href="#bitmap-native-analytical-sql"
+      id="toc-bitmap-native-analytical-sql">Bitmap-Native Analytical
+      SQL</a>
+      <ul>
+      <li><a href="#executive-summary"
+      id="toc-executive-summary">Executive Summary</a></li>
+      <li><a href="#motivation" id="toc-motivation">Motivation</a></li>
+      <li><a href="#core-vocabulary" id="toc-core-vocabulary">Core
+      Vocabulary</a></li>
+      <li><a href="#data-representation"
+      id="toc-data-representation">Data Representation</a></li>
+      <li><a href="#selection-algebra"
+      id="toc-selection-algebra">Selection Algebra</a></li>
+      <li><a href="#boolean-algebra" id="toc-boolean-algebra">Boolean
+      Algebra</a></li>
+      <li><a href="#bsi-algebra" id="toc-bsi-algebra">BSI
+      Algebra</a></li>
+      <li><a href="#join-algebra" id="toc-join-algebra">Join
+      Algebra</a></li>
+      <li><a href="#semi-joins-and-anti-joins"
+      id="toc-semi-joins-and-anti-joins">Semi-Joins and
+      Anti-Joins</a></li>
+      <li><a href="#aggregation-and-late-materialization"
+      id="toc-aggregation-and-late-materialization">Aggregation and Late
+      Materialization</a></li>
+      <li><a href="#optimizer-direction"
+      id="toc-optimizer-direction">Optimizer Direction</a></li>
+      <li><a href="#tpc-h-as-an-architectural-microcosm"
+      id="toc-tpc-h-as-an-architectural-microcosm">TPC-H as an
+      Architectural Microcosm</a></li>
+      <li><a href="#patent-context" id="toc-patent-context">Patent
+      Context</a></li>
+      <li><a href="#relationship-to-roaring-bitmaps"
+      id="toc-relationship-to-roaring-bitmaps">Relationship to Roaring
+      Bitmaps</a></li>
+      <li><a href="#what-makes-this-different"
+      id="toc-what-makes-this-different">What Makes This
+      Different</a></li>
+      <li><a href="#current-limits" id="toc-current-limits">Current
+      Limits</a></li>
+      <li><a href="#near-term-proof-points"
+      id="toc-near-term-proof-points">Near-Term Proof Points</a></li>
+      <li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+      <li><a href="#references" id="toc-references">References</a></li>
+      </ul></li>
+      </ul>
+      <article>
+<h1 id="bitmap-native-analytical-sql">Bitmap-Native Analytical SQL</h1>
+<p>Status: Draft v0.1, internal working paper Last updated:
+2026-07-19</p>
+<p>This paper is an engineering narrative for QuantaStream. It is not a
+legal analysis, patent claim chart, benchmark report, or final public
+positioning document. Its job is to preserve the architectural thesis
+while the engine is still moving quickly.</p>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>QuantaStream is built around a simple idea:</p>
+<blockquote>
+<p>Bitmap-native analytical SQL.</p>
+</blockquote>
+<p>The database should accept familiar SQL, but the physical execution
+model should avoid treating SQL as an instruction to eagerly assemble
+rows. Instead, queries are lowered into constraints over compressed
+bitmap domains. Filters, joins, semi-joins, anti-joins, grouping inputs,
+and same-row comparisons become set operations over row-number domains,
+bit-sliced indexes, dictionaries, and relationship vectors. Rows are
+rehydrated only after the candidate sets have already been narrowed.</p>
+<p>This is the core distinction: QuantaStream is not a row engine with
+bitmap indexes bolted on. It is a bitmap-domain execution engine with a
+SQL front end.</p>
+<h2 id="motivation">Motivation</h2>
+<p>Traditional relational engines are extraordinarily capable, but their
+physical operators often revolve around moving, hashing, sorting, and
+materializing tuples. Modern column stores improve locality and
+compression, but many still pay substantial costs once a query shape
+requires joins, correlated membership, subqueries, grouped aggregates,
+or repeated domain translation between fact and dimension tables.</p>
+<p>QuantaStream takes a different route. It tries to keep the query in
+compressed set form for as long as possible:</p>
+<ul>
+<li><code>AND</code> becomes bitmap intersection.</li>
+<li><code>OR</code> becomes bitmap union.</li>
+<li><code>NOT</code>, anti-join, and <code>NOT IN</code> become bitmap
+difference.</li>
+<li>Equality and range predicates over numeric, time, and encoded string
+domains produce candidate bitmaps.</li>
+<li>Join relationships are represented as vectors that translate
+candidate sets between row-number domains.</li>
+<li>Aggregation operates after candidate reduction, materializing only
+the fields required for grouping, ordering, aggregate inputs, residual
+predicates, and final projection.</li>
+</ul>
+<p>The result is an execution model where SQL becomes constraint
+propagation over compressed bitmap domains.</p>
+<h2 id="core-vocabulary">Core Vocabulary</h2>
+<p>QuantaStream needs crisp terms because bitmap engines and relational
+databases use similar words differently.</p>
+<p><code>rownum</code> : The tuple identifier within a table. This is
+the relational row identity used by the query engine. It is not the same
+as a bitmap "row id" in legacy naming.</p>
+<p><code>bitmap</code> : A compressed set of rownums, usually
+represented with Roaring bitmaps. A bitmap answers the question "which
+rows are currently candidates?"</p>
+<p><code>standard bitmap</code> : A bitmap attached to a discrete value.
+Low-cardinality enum values and boolean states naturally fit here.</p>
+<p><code>multiplicity</code> : The column cardinality model.
+<code>scalar</code> means one logical value per row. <code>set</code>
+means a row may belong to multiple value bitmaps for the same
+column.</p>
+<p><code>BSI</code> : A bit-sliced index. A BSI represents numeric,
+timestamp, or encoded string values in a way that supports equality,
+range, comparison, and aggregate-like operations without first
+rehydrating all original values.</p>
+<p><code>StringEnum</code> : A dictionary-backed low-cardinality string
+representation. Values map to stable dictionary ids, and each id can be
+represented as a standard bitmap.</p>
+<p><code>backing string</code> : A high-cardinality string
+representation where the bitmap/BSI path carries a compact comparable
+value and the original value is available through KVStore when
+rehydration is needed.</p>
+<p><code>relationship vector</code> : A BSI that maps rownums in one
+table domain to rownums in another table domain. In practice this is the
+engine's native representation for parent-child relationships.</p>
+<p><code>seed bitmap</code> : A first-class existence/candidate bitmap
+for a table or shard. A seed answers "what rows exist?" without
+synthesizing the answer through a large number of independent predicate
+fragments.</p>
+<h2 id="data-representation">Data Representation</h2>
+<p>The core representation model is intentionally pluggable, but the
+primitives are few:</p>
+<ul>
+<li>Low-cardinality strings and booleans are represented as standard
+bitmaps.</li>
+<li>Numeric values are represented as numeric BSIs.</li>
+<li>Timestamps are represented as timestamp BSIs with an explicit
+granularity.</li>
+<li>High-cardinality strings can be represented through compact BSI/hash
+lookup plus backing storage.</li>
+<li>Relationship columns are represented as vector BSIs.</li>
+<li>Existence can be represented as a table or shard seed bitmap.</li>
+</ul>
+<p>The goal is to reduce one-off physical types. A schema should
+describe the semantics of a column and the data representation choices:
+cardinality, multiplicity, time granularity, numeric precision, prefix
+length, max length, searchability, dictionary behavior, and rehydration
+policy.</p>
+<p>That lets the planner reason about a column in terms of
+capabilities:</p>
+<ul>
+<li>Can this column produce an equality bitmap?</li>
+<li>Can it produce a range bitmap?</li>
+<li>Can it participate in prefix matching?</li>
+<li>Can it perform same-row BSI comparisons?</li>
+<li>Does it require dictionary lookup for original values?</li>
+<li>Does it need KVStore rehydration?</li>
+<li>Can it be used as a relationship vector?</li>
+</ul>
+<p>The optimizer should make decisions from capabilities, not from
+historical type names.</p>
+<h2 id="selection-algebra">Selection Algebra</h2>
+<p>A single-table predicate lowers into a bitmap expression:</p>
+<pre class="text"><code>where age &gt;= 30 and status in (&#39;ACTIVE&#39;, &#39;TRIAL&#39;)</code></pre>
+<p>becomes:</p>
+<pre class="text"><code>INTERSECT(
+  BSI_RANGE(age, 30, +inf),
+  UNION(
+    BITMAP(status = &#39;ACTIVE&#39;),
+    BITMAP(status = &#39;TRIAL&#39;)
+  )
+)</code></pre>
+<p>The result is a candidate rownum bitmap. No rows need to exist yet.
+The engine can also represent <code>!=</code>, <code>NOT IN</code>, and
+anti-membership as differences from a seed:</p>
+<pre class="text"><code>DIFFERENCE(
+  SEED(customers),
+  BITMAP(status = &#39;DELETED&#39;)
+)</code></pre>
+<p>This is important because absence and negation are not afterthoughts.
+They are native set operations.</p>
+<h2 id="boolean-algebra">Boolean Algebra</h2>
+<p>Boolean predicate lowering should preserve SQL semantics while
+favoring bitmap algebra:</p>
+<ul>
+<li><code>A AND B</code> -&gt; <code>INTERSECT(A, B)</code></li>
+<li><code>A OR B</code> -&gt; <code>UNION(A, B)</code></li>
+<li><code>NOT A</code> -&gt; <code>DIFFERENCE(seed, A)</code></li>
+<li><code>A AND NOT B</code> -&gt; <code>DIFFERENCE(A, B)</code></li>
+</ul>
+<p>The planner must respect parentheses, three-valued SQL semantics
+where applicable, and NULL behavior. The physical target, however,
+remains simple: produce candidate bitmaps and combine them with set
+algebra.</p>
+<p>This gives the optimizer a useful freedom: it can order selective
+bitmap reductions before expensive residual scans, and it can avoid
+materializing columns that only exist to reduce candidate sets.</p>
+<h2 id="bsi-algebra">BSI Algebra</h2>
+<p>BSIs extend bitmap selection beyond discrete value membership.</p>
+<p>For a single BSI column:</p>
+<ul>
+<li>Equality produces a bitmap of rows whose encoded value equals a
+literal.</li>
+<li>Range produces a bitmap of rows inside a lower/upper bound.</li>
+<li>Greater-than and less-than variants produce directional candidate
+bitmaps.</li>
+<li>Batch equality can combine many equality probes into one membership
+result.</li>
+</ul>
+<p>For two BSI columns in the same rownum domain:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> l_receiptdate <span class="op">&gt;</span> l_commitdate</span></code></pre></div>
+<p>should become:</p>
+<pre class="text"><code>BSI_COMPARE_GT(l_receiptdate, l_commitdate)</code></pre>
+<p>That returns a bitmap directly. The important point is that same-row
+field comparison should not require materializing both values for every
+candidate row and comparing them in Go. That is temporary implementation
+scaffolding, not the desired algebra.</p>
+<p>This is one reason the Roaring BSI work matters. APIs such as
+BSI-to-BSI comparison let QuantaStream express query intent at the
+correct physical level.</p>
+<h2 id="join-algebra">Join Algebra</h2>
+<p>The join model is the heart of QuantaStream.</p>
+<p>In a conventional relational execution plan, a join often constructs
+joined tuples or a hash structure over one side and probes from the
+other. In QuantaStream, the preferred physical operation is
+relationship-vector constraint propagation.</p>
+<p>This is the direct architectural descendant of the bitmap-join patent
+work. The patent is not merely background IP; it is the foundation for
+treating joins as vector-based translation between bitmap rownum domains
+rather than tuple assembly. QuantaStream's relationship-vector execution
+model is the modern engineering expression of that idea.</p>
+<p>For a parent-child relationship:</p>
+<pre class="text"><code>orders.o_orderkey -&gt; lineitem.l_orderkey</code></pre>
+<p>QuantaStream can store a relationship vector BSI:</p>
+<pre class="text"><code>lineitem rownum -&gt; orders rownum</code></pre>
+<p>This gives the planner two directions of movement:</p>
+<ul>
+<li>Parent-to-child: apply an orders candidate set to the lineitem
+relationship vector and produce matching lineitem rownums.</li>
+<li>Child-to-parent: transpose or reduce a lineitem candidate set
+through the relationship vector and produce matching orders
+rownums.</li>
+</ul>
+<p>That means join execution can be viewed as repeatedly tightening
+candidate sets for each table role:</p>
+<pre class="text"><code>candidates(customer) -&gt; relationship vector -&gt; candidates(orders)
+candidates(orders) -&gt; relationship vector -&gt; candidates(lineitem)
+candidates(lineitem) -&gt; relationship vector -&gt; candidates(orders)</code></pre>
+<p>Each table role keeps its own rownum domain. The planner must know
+when a set crosses rownum domains, and it must translate explicitly
+through a relationship vector. A bitmap from one table is never casually
+compared to a bitmap from another table.</p>
+<h2 id="semi-joins-and-anti-joins">Semi-Joins and Anti-Joins</h2>
+<p>Semi-joins and anti-joins fall naturally out of bitmap algebra.</p>
+<p><code>EXISTS</code> is membership:</p>
+<pre class="text"><code>outer candidates INTERSECT rows_with_matching_inner</code></pre>
+<p><code>NOT EXISTS</code> is difference:</p>
+<pre class="text"><code>outer candidates DIFFERENCE rows_with_matching_inner</code></pre>
+<p>This is strategically important. SQL subqueries, <code>IN</code>,
+<code>NOT IN</code>, <code>EXISTS</code>, <code>NOT EXISTS</code>, and
+certain anti-join forms can all be routed toward the same small set of
+bitmap primitives rather than building separate execution paths for
+every SQL surface form.</p>
+<h2 id="aggregation-and-late-materialization">Aggregation and Late
+Materialization</h2>
+<p>Aggregation should happen after candidate reduction.</p>
+<p>For a grouped aggregate:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> l_orderkey, <span class="fu">sum</span>(l_extendedprice)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> lineitem</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> l_shipdate <span class="op">&lt;</span> <span class="dt">date</span> <span class="st">&#39;1995-03-15&#39;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> l_orderkey</span></code></pre></div>
+<p>the physical path should be:</p>
+<ol type="1">
+<li>Produce a candidate bitmap from the date predicate.</li>
+<li>Materialize only <code>l_orderkey</code> and
+<code>l_extendedprice</code> for those candidates.</li>
+<li>Accumulate grouped state.</li>
+<li>Materialize only final output fields.</li>
+</ol>
+<p>The same model applies across joins. Relationship vectors reduce the
+graph first; grouping fields, aggregate inputs, residual predicate
+fields, and final projection fields are hydrated afterward.</p>
+<p>That is the discipline: use bitmaps to decide which rows matter, then
+hydrate only the values needed to answer the query.</p>
+<h2 id="optimizer-direction">Optimizer Direction</h2>
+<p>The optimizer's long-term job is to choose a reduction order over a
+graph of bitmap domains.</p>
+<p>For star and snowflake schemas, small dimension filters can produce
+compact candidate sets. Relationship vectors can then push those sets
+into the fact table domain before fact table materialization. In the
+other direction, a selective time range or fact predicate can shrink the
+fact table and then pull constraints back toward dimensions.</p>
+<p>The optimizer should eventually reason about:</p>
+<ul>
+<li>Cardinality of each table role.</li>
+<li>Selectivity of predicates.</li>
+<li>Cost of relationship-vector projection.</li>
+<li>Cost of BSI range and comparison operations.</li>
+<li>Cost of materialization by representation type.</li>
+<li>Cost of residual predicates.</li>
+<li>Time-shard and node locality.</li>
+<li>Whether a seed bitmap is already cached.</li>
+<li>Whether a candidate set is cheap enough to pass to a node.</li>
+<li>Whether a broad node-side seed or shard-local filter is
+cheaper.</li>
+</ul>
+<p>This is where QuantaStream may become genuinely distinct. The
+optimizer is not just choosing join order. It is choosing the order in
+which compressed constraints should flow through a graph.</p>
+<h2 id="tpc-h-as-an-architectural-microcosm">TPC-H as an Architectural
+Microcosm</h2>
+<p>TPC-H is useful because it contains many of the shapes QuantaStream
+cares about:</p>
+<ul>
+<li>A large fact-like table: <code>lineitem</code>.</li>
+<li>Header/fact relationship: <code>orders</code>.</li>
+<li>Dimensions: <code>customer</code>, <code>supplier</code>,
+<code>part</code>, <code>nation</code>, <code>region</code>.</li>
+<li>A bridge-like table: <code>partsupp</code>.</li>
+<li>Date ranges, string dictionaries, numeric BSIs, grouped aggregates,
+correlated membership, same-row comparisons, and multi-hop joins.</li>
+</ul>
+<p>The current local work has shown that these query shapes can be
+represented by the new SQL, planner, runtime, relationship-vector, and
+materialization stack. That is not yet a benchmark claim. It is an
+important correctness and architecture signal: the engine is beginning
+to answer real analytical shapes through the bitmap-native path.</p>
+<p>The next proof point should be larger scale-factor data on controlled
+hardware, with reproducible MySQL and QuantaStream baselines.</p>
+<h2 id="patent-context">Patent Context</h2>
+<p>The project has prior IP context around bitmap representation and
+bitmap-based query processing.</p>
+<p>The granted Disney patent <code>US11392606</code>, "System and method
+for converting user data from disparate sources to bitmap data,"
+describes converting data from multiple sources into a conformed data
+set and then into bitmap-oriented representation. The public patent
+record lists Dakshinamurthi Rajavel, Guy Molinari, Ryan J. Junk, and
+Rajagopal Baskaran as inventors.</p>
+<p>The related Disney join patent is <code>US12086136</code>,
+"Techniques for Executing Join Operations Using Bitmap Indices." The
+public record lists Guy Molinari as the inventor, Disney Enterprises,
+Inc. as the assignee, a February 4, 2020 filing date, and a September
+10, 2024 grant date. This patent is critical because it is the
+foundation of vector-based joins: join processing can be expressed by
+producing child or parent result bitmaps and translating those sets
+through BSI-backed relationship structures.</p>
+<p>These references should be treated as historical and strategic
+context. They do not define the full QuantaStream design, and this paper
+does not attempt to interpret patent scope. The current QuantaStream
+architecture adds a concrete SQL compatibility surface,
+relationship-vector execution, late materialization, native runtime
+inspection, direct and standard deployment modes, and an implementation
+path built around modern Roaring bitmap/BSI primitives.</p>
+<h2 id="relationship-to-roaring-bitmaps">Relationship to Roaring
+Bitmaps</h2>
+<p>Roaring bitmaps are the practical compression foundation. They
+provide a well-known compressed bitmap representation with fast set
+operations, and the Roaring ecosystem is the right place for core BSI
+improvements that are generally useful beyond QuantaStream.</p>
+<p>QuantaStream should avoid private forks of fundamental bitmap
+algorithms where possible. When the BSI library needs better primitives,
+the ideal path is to produce polished, benchmark-backed contributions
+upstream. That includes:</p>
+<ul>
+<li>Faster <code>BatchEqual</code>-style membership operations.</li>
+<li>BSI-to-BSI comparison operators.</li>
+<li>More professional BSI tests and benchmarks.</li>
+<li>Clear documentation of where 64-bit BSI behavior differs from 32-bit
+BSI behavior.</li>
+</ul>
+<p>The database and the bitmap library should evolve together, but with
+clean boundaries. QuantaStream should express database intent. Roaring
+should expose correct, efficient bitmap and BSI primitives.</p>
+<h2 id="what-makes-this-different">What Makes This Different</h2>
+<p>The differentiator is not simply "uses bitmaps." Many systems use
+bitmap indexes.</p>
+<p>The differentiator is that QuantaStream treats compressed bitmap
+domains as the native query execution substrate:</p>
+<ul>
+<li>SQL is parsed and planned into bitmap-capable intermediate
+forms.</li>
+<li>Table roles remain separate rownum domains until explicitly
+translated.</li>
+<li>Relationship vectors perform domain translation.</li>
+<li>Boolean logic is lowered into set algebra.</li>
+<li>Same-row comparisons are intended to be BSI comparisons, not row
+scans.</li>
+<li>Semi-joins and anti-joins become membership and difference.</li>
+<li>Aggregation is fed by reduced candidate sets.</li>
+<li>Materialization is late and field-specific.</li>
+<li>Runtime inspection exposes the physical algebra used to answer a
+query.</li>
+</ul>
+<p>The guiding line is worth preserving:</p>
+<blockquote>
+<p>QuantaStream does not move rows through joins; it moves constraints
+through compressed bitmap domains until only the necessary rows
+remain.</p>
+</blockquote>
+<h2 id="current-limits">Current Limits</h2>
+<p>The architecture is promising, but the work is not done.</p>
+<ul>
+<li>The cost optimizer is still early.</li>
+<li>SQL support is broadening, but not complete.</li>
+<li>Full MySQL compatibility is a goal, not a completed claim.</li>
+<li>Larger scale-factor TPC-H and compatibility benchmarks are still
+needed.</li>
+<li>The batch and streaming load paths need substantial work.</li>
+<li>Startup time and shard manifest handling need continued
+hardening.</li>
+<li>Future BSI library work remains an optimization frontier, but the
+current same-row comparison path is available from the selected Roaring
+dependency.</li>
+<li>High-cardinality string representation still needs the StringLexBSI
+design to mature.</li>
+<li>Global cross-session query caching remains a future feature, not a
+crutch the current engine requires.</li>
+</ul>
+<p>These limits are healthy. They keep the project honest.</p>
+<h2 id="near-term-proof-points">Near-Term Proof Points</h2>
+<p>The most useful next proof points are:</p>
+<ol type="1">
+<li>Keep the TPC-H query suite green in both direct and standard
+modes.</li>
+<li>Run reproducible MySQL versus QuantaStream compatibility and
+benchmark labs.</li>
+<li>Add larger scale-factor data on controlled hardware.</li>
+<li>Finish BSI comparison work with upstream-quality tests and
+benchmarks.</li>
+<li>Improve load-path throughput before relying on larger public
+demos.</li>
+<li>Continue reducing materialization where a bitmap or BSI primitive
+can answer directly.</li>
+<li>Start cost-based optimization from table cardinality, predicate
+selectivity, and relationship-vector reduction cost.</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>QuantaStream's core algebra is compact:</p>
+<pre class="text"><code>selection      -&gt; bitmap production
+AND            -&gt; intersection
+OR             -&gt; union
+NOT            -&gt; difference
+range/equality -&gt; BSI or dictionary bitmap
+same-row cmp   -&gt; BSI-to-BSI comparison
+join           -&gt; relationship-vector domain translation
+EXISTS         -&gt; membership
+NOT EXISTS     -&gt; difference
+aggregation    -&gt; reduced candidates plus late materialization</code></pre>
+<p>That compact algebra is the project.</p>
+<p>The product expression is SQL. The execution expression is bitmap
+algebra. The engineering challenge is to make those two worlds line up
+cleanly enough that a user can write ordinary analytical SQL while the
+engine quietly does something unusually powerful underneath.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a
+href="https://patents.google.com/patent/US11392606B2/en">US11392606B2,
+System and method for converting user data from disparate sources to
+bitmap data</a></li>
+<li><a href="https://patents.justia.com/company/disney?page=12">Justia
+listing for US11392606</a></li>
+<li><a
+href="https://patents.justia.com/company/disney?page=2">US12086136,
+Techniques for Executing Join Operations Using Bitmap Indices</a></li>
+<li><a href="https://arxiv.org/abs/1402.6407">Roaring bitmaps: Better
+bitmap performance with Roaring bitmaps</a></li>
+<li><a href="https://arxiv.org/abs/1402.4466">Compressed bitmap indexes:
+beyond unions and intersections</a></li>
+</ul>
+      </article>
+    </div>
+    <footer>QuantaStream · Bitmap-native analytical SQL</footer>
+  </div>
+</body>
+</html>
