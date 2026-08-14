@@ -330,6 +330,18 @@
       line-height: 1.5;
     }
 
+    .about-photo {
+      width: min(100%, 220px);
+      margin-top: 24px;
+      aspect-ratio: 1;
+      border-radius: 22px;
+      object-fit: cover;
+      object-position: center;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
     .about-copy {
       color: var(--soft);
       font-size: 17px;
@@ -366,6 +378,10 @@
 
       .about-grid {
         grid-template-columns: 1fr;
+      }
+
+      .about-photo {
+        width: min(220px, 68vw);
       }
     }
 
@@ -477,6 +493,7 @@
           <p class="about-label">About the founder</p>
           <h2 id="about-title">Guy Molinari</h2>
           <p class="about-role">Principal Engineer and Founder<br>Playa Zancudo, Costa Rica</p>
+          <img class="about-photo" src="assets/guy-headshot.png" alt="Guy Molinari">
         </div>
         <div class="about-copy">
           <p>I spent 21 years at The Walt Disney Company as a software engineer, architect, and engineering leader. My early work included Disney's Tea language compiler and Barista servlet container, helping migrate Disney web applications to Apache Tomcat, and leading development of FastCast - an asynchronous server cluster designed to support approximately 20 million concurrent connections for ESPN live-score feeds and GameCast sports visualizations.</p>
