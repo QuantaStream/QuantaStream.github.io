@@ -111,11 +111,25 @@
       font-size: 14px;
     }
 
-    .nav a {
+    .nav a,
+    .nav button {
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.04);
       border-radius: 999px;
       padding: 9px 14px;
+      color: inherit;
+      font: inherit;
+    }
+
+    .nav button {
+      cursor: pointer;
+    }
+
+    .lang-toggle {
+      color: #a9f2ff;
+      border-color: rgba(8, 199, 223, 0.28);
+      background: rgba(8, 199, 223, 0.10);
+      font-weight: 760;
     }
 
     main {
@@ -424,27 +438,28 @@
         <span>QuantaStream</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
-        <a href="#about">About Guy</a>
-        <a href="mailto:info@quantastream.org">Contact</a>
+        <a href="#about" data-i18n="navAbout">About Guy</a>
+        <a href="mailto:info@quantastream.org" data-i18n="navContact">Contact</a>
         <a href="https://github.com/QuantaStream">GitHub</a>
+        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español">Español</button>
       </nav>
     </header>
 
     <main>
       <section aria-labelledby="hero-title">
-        <h1 id="hero-title">Bitmap-native analytical SQL.</h1>
-        <p class="lede">QuantaStream explores how SQL can execute over compressed bitmap domains, BSI-backed values, and relationship vectors.</p>
-        <p class="status">It is quietly taking shape as a systems project for analytical workloads, late materialization, and set-based query execution.</p>
+        <h1 id="hero-title" data-i18n="heroTitle">Bitmap-native analytical SQL.</h1>
+        <p class="lede" data-i18n="heroLede">QuantaStream explores how SQL can execute over compressed bitmap domains, BSI-backed values, and relationship vectors.</p>
+        <p class="status" data-i18n="heroStatus">It is quietly taking shape as a systems project for analytical workloads, late materialization, and set-based query execution.</p>
         <div class="actions">
-          <a class="button primary" href="whitepaper.html">View the white paper</a>
-          <a class="button secondary" href="mailto:info@quantastream.org">Start a conversation</a>
+          <a class="button primary" href="whitepaper.html" data-i18n="whitepaperCta">View the white paper</a>
+          <a class="button secondary" href="mailto:info@quantastream.org" data-i18n="conversationCta">Start a conversation</a>
         </div>
       </section>
 
       <aside class="visual" aria-label="Bitmap query visualization">
         <div class="visual-head">
-          <span>Compressed domains</span>
-          <span>SQL -&gt; sets</span>
+          <span data-i18n="visualHeadLeft">Compressed domains</span>
+          <span data-i18n="visualHeadRight">SQL -&gt; sets</span>
         </div>
         <div class="domain">
           <div class="domain-row">
@@ -476,13 +491,13 @@
           </div>
         </div>
         <div class="operators" aria-hidden="true">
-          <div class="op">INTERSECT</div>
-          <div class="op">DIFFERENCE</div>
-          <div class="op">PROJECT</div>
+          <div class="op" data-i18n="opIntersect">INTERSECT</div>
+          <div class="op" data-i18n="opDifference">DIFFERENCE</div>
+          <div class="op" data-i18n="opProject">PROJECT</div>
         </div>
         <div class="result-band">
-          <p class="result-title">Working thesis</p>
-          <p class="result-copy">SQL as constraint propagation over compressed bitmap domains.</p>
+          <p class="result-title" data-i18n="workingThesis">Working thesis</p>
+          <p class="result-copy" data-i18n="workingCopy">SQL as constraint propagation over compressed bitmap domains.</p>
         </div>
       </aside>
     </main>
@@ -490,24 +505,111 @@
     <section class="about" id="about" aria-labelledby="about-title">
       <div class="about-grid">
         <div>
-          <p class="about-label">About the founder</p>
+          <p class="about-label" data-i18n="aboutLabel">About the founder</p>
           <h2 id="about-title">Guy Molinari</h2>
-          <p class="about-role">Principal Engineer and Founder<br>Playa Zancudo, Costa Rica</p>
+          <p class="about-role" data-i18n="aboutRole">Principal Engineer and Founder<br>Playa Zancudo, Costa Rica</p>
           <img class="about-photo" src="assets/guy-headshot.png" alt="Guy Molinari">
         </div>
         <div class="about-copy">
-          <p>I spent 21 years at The Walt Disney Company as a software engineer, architect, and engineering leader. My early work included Disney's Tea language compiler and Barista servlet container, helping migrate Disney web applications to Apache Tomcat, and leading development of FastCast - an asynchronous server cluster designed to support approximately 20 million concurrent connections for ESPN live-score feeds and GameCast sports visualizations.</p>
-          <p>In 2019, I moved to Disney's Data Platforms organization and began developing bitmap-based technology for managing and querying advertising revenue and inventory data. I am the sole inventor of U.S. Patent 12,086,136, <em>Techniques for Executing Join Operations Using Bitmap Indices</em>, and a named inventor on multiple other U.S. patents covering bitmap-oriented data management, adaptive caching, and related technologies.</p>
-          <p>In 2021, I became Senior Manager of Data Platforms Engineering at Disney Streaming, where I led a team of 13 engineers developing the Data Activation Framework.</p>
-          <p>I retired from Disney in 2025, but not from engineering. I founded QuantaStream to continue exploring an idea that began during my time at Disney: that bitmap and bit-sliced indexing can provide a fundamentally different foundation for distributed SQL, real-time ingestion, and analytical query processing.</p>
+          <p data-i18n="aboutP1">I spent 21 years at The Walt Disney Company as a software engineer, architect, and engineering leader. My early work included Disney's Tea language compiler and Barista servlet container, helping migrate Disney web applications to Apache Tomcat, and leading development of FastCast - an asynchronous server cluster designed to support approximately 20 million concurrent connections for ESPN live-score feeds and GameCast sports visualizations.</p>
+          <p data-i18n="aboutP2">In 2019, I moved to Disney's Data Platforms organization and began developing bitmap-based technology for managing and querying advertising revenue and inventory data. I am the sole inventor of U.S. Patent 12,086,136, <em>Techniques for Executing Join Operations Using Bitmap Indices</em>, and a named inventor on multiple other U.S. patents covering bitmap-oriented data management, adaptive caching, and related technologies.</p>
+          <p data-i18n="aboutP3">In 2021, I became Senior Manager of Data Platforms Engineering at Disney Streaming, where I led a team of 13 engineers developing the Data Activation Framework.</p>
+          <p data-i18n="aboutP4">I retired from Disney in 2025, but not from engineering. I founded QuantaStream to continue exploring an idea that began during my time at Disney: that bitmap and bit-sliced indexing can provide a fundamentally different foundation for distributed SQL, real-time ingestion, and analytical query processing.</p>
         </div>
       </div>
     </section>
 
     <footer class="closing">
-      <span>QuantaStream is being prepared for a future public release.</span>
-      <span>More soon.</span>
+      <span data-i18n="footerStatus">QuantaStream is being prepared for a future public release.</span>
+      <span data-i18n="footerMore">More soon.</span>
     </footer>
   </div>
+  <script>
+    const translations = {
+      en: {
+        navAbout: "About Guy",
+        navContact: "Contact",
+        heroTitle: "Bitmap-native analytical SQL.",
+        heroLede: "QuantaStream explores how SQL can execute over compressed bitmap domains, BSI-backed values, and relationship vectors.",
+        heroStatus: "It is quietly taking shape as a systems project for analytical workloads, late materialization, and set-based query execution.",
+        whitepaperCta: "View the white paper",
+        conversationCta: "Start a conversation",
+        visualHeadLeft: "Compressed domains",
+        visualHeadRight: "SQL -&gt; sets",
+        opIntersect: "INTERSECT",
+        opDifference: "DIFFERENCE",
+        opProject: "PROJECT",
+        workingThesis: "Working thesis",
+        workingCopy: "SQL as constraint propagation over compressed bitmap domains.",
+        aboutLabel: "About the founder",
+        aboutRole: "Principal Engineer and Founder<br>Playa Zancudo, Costa Rica",
+        aboutP1: "I spent 21 years at The Walt Disney Company as a software engineer, architect, and engineering leader. My early work included Disney's Tea language compiler and Barista servlet container, helping migrate Disney web applications to Apache Tomcat, and leading development of FastCast - an asynchronous server cluster designed to support approximately 20 million concurrent connections for ESPN live-score feeds and GameCast sports visualizations.",
+        aboutP2: "In 2019, I moved to Disney's Data Platforms organization and began developing bitmap-based technology for managing and querying advertising revenue and inventory data. I am the sole inventor of U.S. Patent 12,086,136, <em>Techniques for Executing Join Operations Using Bitmap Indices</em>, and a named inventor on multiple other U.S. patents covering bitmap-oriented data management, adaptive caching, and related technologies.",
+        aboutP3: "In 2021, I became Senior Manager of Data Platforms Engineering at Disney Streaming, where I led a team of 13 engineers developing the Data Activation Framework.",
+        aboutP4: "I retired from Disney in 2025, but not from engineering. I founded QuantaStream to continue exploring an idea that began during my time at Disney: that bitmap and bit-sliced indexing can provide a fundamentally different foundation for distributed SQL, real-time ingestion, and analytical query processing.",
+        footerStatus: "QuantaStream is being prepared for a future public release.",
+        footerMore: "More soon.",
+        toggleLabel: "Español",
+        toggleAria: "Cambiar idioma a español"
+      },
+      es: {
+        navAbout: "Sobre Guy",
+        navContact: "Contacto",
+        heroTitle: "SQL analítico nativo de bitmaps.",
+        heroLede: "QuantaStream explora cómo SQL puede ejecutarse sobre dominios de bitmaps comprimidos, valores respaldados por BSI y vectores de relación.",
+        heroStatus: "Está tomando forma discretamente como un proyecto de sistemas para cargas analíticas, materialización tardía y ejecución de consultas basada en conjuntos.",
+        whitepaperCta: "Ver el white paper",
+        conversationCta: "Iniciar una conversación",
+        visualHeadLeft: "Dominios comprimidos",
+        visualHeadRight: "SQL -&gt; conjuntos",
+        opIntersect: "INTERSECCIÓN",
+        opDifference: "DIFERENCIA",
+        opProject: "PROYECCIÓN",
+        workingThesis: "Tesis de trabajo",
+        workingCopy: "SQL como propagación de restricciones sobre dominios de bitmaps comprimidos.",
+        aboutLabel: "Sobre el fundador",
+        aboutRole: "Ingeniero principal y fundador<br>Playa Zancudo, Costa Rica",
+        aboutP1: "Pasé 21 años en The Walt Disney Company como ingeniero de software, arquitecto y líder de ingeniería. Mi trabajo inicial incluyó el compilador del lenguaje Tea de Disney y el contenedor de servlets Barista, ayudando a migrar aplicaciones web de Disney a Apache Tomcat y liderando el desarrollo de FastCast: un clúster de servidores asíncrono diseñado para soportar aproximadamente 20 millones de conexiones concurrentes para feeds de resultados en vivo de ESPN y visualizaciones deportivas de GameCast.",
+        aboutP2: "En 2019, pasé a la organización de Data Platforms de Disney y empecé a desarrollar tecnología basada en bitmaps para gestionar y consultar datos de ingresos e inventario publicitario. Soy el único inventor de la patente estadounidense 12,086,136, <em>Techniques for Executing Join Operations Using Bitmap Indices</em>, y figuro como inventor en varias otras patentes estadounidenses sobre gestión de datos orientada a bitmaps, caché adaptiva y tecnologías relacionadas.",
+        aboutP3: "En 2021, me convertí en Senior Manager de Data Platforms Engineering en Disney Streaming, donde lideré un equipo de 13 ingenieros que desarrollaba el Data Activation Framework.",
+        aboutP4: "Me retiré de Disney en 2025, pero no de la ingeniería. Fundé QuantaStream para seguir explorando una idea que empezó durante mi etapa en Disney: que los bitmaps y los índices bit-sliced pueden ofrecer una base fundamentalmente distinta para SQL distribuido, ingestión en tiempo real y procesamiento analítico de consultas.",
+        footerStatus: "QuantaStream se está preparando para un futuro lanzamiento público.",
+        footerMore: "Más novedades pronto.",
+        toggleLabel: "English",
+        toggleAria: "Switch language to English"
+      }
+    };
+
+    const languageToggle = document.querySelector("[data-lang-toggle]");
+
+    function setLanguage(language) {
+      const nextLanguage = translations[language] ? language : "en";
+      document.documentElement.lang = nextLanguage;
+
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.getAttribute("data-i18n");
+        if (translations[nextLanguage][key]) {
+          element.innerHTML = translations[nextLanguage][key];
+        }
+      });
+
+      if (languageToggle) {
+        languageToggle.textContent = translations[nextLanguage].toggleLabel;
+        languageToggle.setAttribute("aria-label", translations[nextLanguage].toggleAria);
+        languageToggle.setAttribute("aria-pressed", nextLanguage === "es" ? "true" : "false");
+      }
+
+      localStorage.setItem("quantastream-language", nextLanguage);
+    }
+
+    if (languageToggle) {
+      languageToggle.addEventListener("click", () => {
+        const nextLanguage = document.documentElement.lang === "es" ? "en" : "es";
+        setLanguage(nextLanguage);
+      });
+    }
+
+    setLanguage(localStorage.getItem("quantastream-language") || "en");
+  </script>
 </body>
 </html>
