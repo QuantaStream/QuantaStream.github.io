@@ -623,7 +623,10 @@
       });
 
       document.querySelectorAll("[data-lang-panel]").forEach((element) => {
-        element.hidden = element.getAttribute("data-lang-panel") !== nextLanguage;
+        const isActivePanel = element.getAttribute("data-lang-panel") === nextLanguage;
+        element.hidden = !isActivePanel;
+        element.style.display = isActivePanel ? "" : "none";
+        element.setAttribute("aria-hidden", isActivePanel ? "false" : "true");
       });
 
       if (languageToggle) {
