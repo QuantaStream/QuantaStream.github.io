@@ -50,7 +50,34 @@
       padding: 28px 0 36px;
       border-bottom: 1px solid var(--line);
     }
-    .brand { color: var(--ink); text-decoration: none; font-size: 22px; font-weight: 760; }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding: 7px;
+      background: #050912;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10), 0 16px 44px rgba(8, 199, 223, 0.22);
+    }
+    .bit {
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+    }
+    .bit.on:nth-child(1), .bit.on:nth-child(6), .bit.on:nth-child(11), .bit.on:nth-child(16) { background: var(--cyan); }
+    .bit.on:nth-child(3), .bit.on:nth-child(8), .bit.on:nth-child(9), .bit.on:nth-child(14) { background: var(--green); }
+    .bit.on:nth-child(4), .bit.on:nth-child(12) { background: var(--gold); }
     .top-actions {
       display: flex;
       align-items: center;
@@ -128,7 +155,15 @@
 <body>
   <div class="shell">
     <header>
-      <a class="brand" href="index.html">QuantaStream</a>
+      <a class="brand" href="index.html" aria-label="QuantaStream home">
+        <span class="mark" aria-hidden="true">
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+        </span>
+        <span>QuantaStream</span>
+      </a>
       <div class="top-actions">
         <a class="back" href="index.html" data-i18n="backHome">Back to home</a>
         <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español">Español</button>
