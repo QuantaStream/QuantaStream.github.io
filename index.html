@@ -310,6 +310,193 @@
       font-weight: 760;
     }
 
+    .scale {
+      margin-top: 86px;
+      padding: clamp(28px, 5vw, 54px) 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 24px;
+    }
+
+    .section-label {
+      margin: 0 0 12px;
+      color: #a9f2ff;
+      font-size: 13px;
+      font-weight: 760;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(34px, 4.8vw, 56px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      max-width: 740px;
+      margin: 18px 0 0;
+      color: var(--soft);
+      font-size: clamp(17px, 2vw, 21px);
+      line-height: 1.5;
+    }
+
+    .scale-visual {
+      margin-top: 34px;
+      display: grid;
+      gap: 28px;
+    }
+
+    .scale-curves {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .scale-panel {
+      min-width: 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .scale-panel h3,
+    .hot-paths h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .scale-panel .scale-note {
+      margin: 7px 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .scale-bars {
+      display: grid;
+      gap: 12px;
+    }
+
+    .scale-row {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) 58px;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    .bar-track {
+      position: relative;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--bar);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      box-shadow: 0 0 24px rgba(8, 199, 223, 0.24);
+    }
+
+    .scale-value {
+      color: var(--soft);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .scale-foot {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .scale-foot strong {
+      color: var(--green);
+      font-weight: 760;
+    }
+
+    .hot-paths {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+    }
+
+    .hot-paths-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-end;
+      margin-bottom: 18px;
+    }
+
+    .hot-paths p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .ratio-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .ratio-row {
+      display: grid;
+      grid-template-columns: minmax(110px, 180px) minmax(0, 1fr) 58px;
+      align-items: center;
+      gap: 12px;
+      color: var(--soft);
+      font-size: 13px;
+    }
+
+    .ratio-track {
+      position: relative;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .ratio-track::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 56%;
+      border-left: 1px dashed rgba(245, 248, 255, 0.52);
+    }
+
+    .ratio-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--bar);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold), var(--rose));
+    }
+
+    .ratio-value {
+      color: var(--ink);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-weight: 760;
+    }
+
     .about {
       margin-top: 72px;
       padding: clamp(28px, 5vw, 54px);
@@ -398,6 +585,10 @@
         grid-template-columns: 1fr;
       }
 
+      .scale-curves {
+        grid-template-columns: 1fr;
+      }
+
       .about-photo {
         width: min(220px, 68vw);
       }
@@ -426,6 +617,23 @@
       .cells {
         grid-template-columns: repeat(8, 1fr);
       }
+
+      .hot-paths-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .ratio-row {
+        grid-template-columns: 1fr;
+      }
+
+      .ratio-row {
+        gap: 6px;
+      }
+
+      .ratio-value {
+        text-align: left;
+      }
     }
   </style>
 </head>
@@ -442,6 +650,7 @@
         <span>QuantaStream</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
+        <a href="#scale" data-i18n="navScale">Scale</a>
         <a href="#about" data-i18n="navAbout">About Guy</a>
         <a href="mailto:info@quantastream.org" data-i18n="navContact">Contact</a>
         <a href="https://github.com/QuantaStream">GitHub</a>
@@ -517,6 +726,132 @@
       </aside>
     </main>
 
+    <section class="scale" id="scale">
+      <p class="section-label" data-i18n="scaleLabel">Distributed benchmark</p>
+      <h2 class="section-title" data-i18n="scaleTitle">So how does QuantaStream scale?</h2>
+      <p class="section-copy" data-i18n="scaleIntro">A three-node AWS cluster was loaded and tested at TPC-H SF1, SF2, and SF3 using the same loader settings. Read-only suite time tracks data growth closely; the heavier profile suite highlights the relationship-heavy paths we are still tuning.</p>
+
+      <div class="scale-visual" aria-label="QuantaStream SF1 to SF3 scale visualization">
+        <div class="scale-curves">
+          <div class="scale-panel">
+            <h3 data-i18n="scaleLoadTitle">Load elapsed</h3>
+            <p class="scale-note" data-i18n="scaleLoadNote">Full TPC-H distributed load, workers=3, batch=1000.</p>
+            <div class="scale-bars" aria-label="Load elapsed by TPC-H scale factor">
+              <div class="scale-row">
+                <span>SF1</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:31.5%"></span></span>
+                <span class="scale-value">5.7m</span>
+              </div>
+              <div class="scale-row">
+                <span>SF2</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:64.1%"></span></span>
+                <span class="scale-value">11.5m</span>
+              </div>
+              <div class="scale-row">
+                <span>SF3</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:100%"></span></span>
+                <span class="scale-value">17.9m</span>
+              </div>
+            </div>
+            <p class="scale-foot" data-i18n="scaleLoadFoot"><strong>3.17x</strong> SF1 time at 3x data.</p>
+          </div>
+
+          <div class="scale-panel">
+            <h3 data-i18n="scaleReadonlyTitle">Read-only suite</h3>
+            <p class="scale-note" data-i18n="scaleReadonlyNote">The compact correctness/performance suite.</p>
+            <div class="scale-bars" aria-label="Read-only benchmark suite elapsed by TPC-H scale factor">
+              <div class="scale-row">
+                <span>SF1</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:32.0%"></span></span>
+                <span class="scale-value">10.8s</span>
+              </div>
+              <div class="scale-row">
+                <span>SF2</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:67.0%"></span></span>
+                <span class="scale-value">22.6s</span>
+              </div>
+              <div class="scale-row">
+                <span>SF3</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:100%"></span></span>
+                <span class="scale-value">33.7s</span>
+              </div>
+            </div>
+            <p class="scale-foot" data-i18n="scaleReadonlyFoot"><strong>3.13x</strong> SF1 time at 3x data.</p>
+          </div>
+
+          <div class="scale-panel">
+            <h3 data-i18n="scaleProfileTitle">Profile suite</h3>
+            <p class="scale-note" data-i18n="scaleProfileNote">Relationship-heavy paths with richer query coverage.</p>
+            <div class="scale-bars" aria-label="Profile benchmark suite elapsed by TPC-H scale factor">
+              <div class="scale-row">
+                <span>SF1</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:27.1%"></span></span>
+                <span class="scale-value">31.2s</span>
+              </div>
+              <div class="scale-row">
+                <span>SF2</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:61.2%"></span></span>
+                <span class="scale-value">70.5s</span>
+              </div>
+              <div class="scale-row">
+                <span>SF3</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:100%"></span></span>
+                <span class="scale-value">115s</span>
+              </div>
+            </div>
+            <p class="scale-foot" data-i18n="scaleProfileFoot"><strong>3.69x</strong> SF1 time at 3x data.</p>
+          </div>
+        </div>
+
+        <div class="hot-paths">
+          <div class="hot-paths-head">
+            <div>
+              <h3 data-i18n="scaleHotTitle">Where the extra time goes</h3>
+              <p data-i18n="scaleHotCopy">SF3 divided by SF1 runtime. The dashed marker is the 3x linear target.</p>
+            </div>
+            <p data-i18n="scaleHotMeta">3 data nodes · SF1/SF2/SF3 · same loader profile</p>
+          </div>
+          <div class="ratio-grid" aria-label="Hot path runtime ratios from SF1 to SF3">
+            <div class="ratio-row">
+              <span>Profile q19</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:100%"></span></span>
+              <span class="ratio-value">5.33x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Readonly q19</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:98.3%"></span></span>
+              <span class="ratio-value">5.24x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Profile q5 same</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:75.6%"></span></span>
+              <span class="ratio-value">4.03x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Profile q3</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:69.6%"></span></span>
+              <span class="ratio-value">3.71x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Readonly q5</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:65.3%"></span></span>
+              <span class="ratio-value">3.48x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Readonly q3</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:62.0%"></span></span>
+              <span class="ratio-value">3.30x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Readonly q21</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:47.7%"></span></span>
+              <span class="ratio-value">2.54x</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="about" id="about">
       <div class="about-grid" data-lang-panel="en">
         <div>
@@ -556,6 +891,7 @@
   <script>
     const translations = {
       en: {
+        navScale: "Scale",
         navAbout: "About Guy",
         navContact: "Contact",
         heroTitle: "Bitmap-native analytical SQL.",
@@ -576,12 +912,28 @@
         aboutP2: "In 2019, I moved to Disney's Data Platforms organization and began developing bitmap-based technology for managing and querying advertising revenue and inventory data. I am the sole inventor of U.S. Patent 12,086,136, <em>Techniques for Executing Join Operations Using Bitmap Indices</em>, and a named inventor on multiple other U.S. patents covering bitmap-oriented data management, adaptive caching, and related technologies.",
         aboutP3: "In 2021, I became Senior Manager of Data Platforms Engineering at Disney Streaming, where I led a team of 13 engineers developing the Data Activation Framework.",
         aboutP4: "I retired from Disney in 2025, but not from engineering. I founded QuantaStream to continue exploring an idea that began during my time at Disney: that bitmap and bit-sliced indexing can provide a fundamentally different foundation for distributed SQL, real-time ingestion, and analytical query processing.",
+        scaleLabel: "Distributed benchmark",
+        scaleTitle: "So how does QuantaStream scale?",
+        scaleIntro: "A three-node AWS cluster was loaded and tested at TPC-H SF1, SF2, and SF3 using the same loader settings. Read-only suite time tracks data growth closely; the heavier profile suite highlights the relationship-heavy paths we are still tuning.",
+        scaleLoadTitle: "Load elapsed",
+        scaleLoadNote: "Full TPC-H distributed load, workers=3, batch=1000.",
+        scaleLoadFoot: "<strong>3.17x</strong> SF1 time at 3x data.",
+        scaleReadonlyTitle: "Read-only suite",
+        scaleReadonlyNote: "The compact correctness/performance suite.",
+        scaleReadonlyFoot: "<strong>3.13x</strong> SF1 time at 3x data.",
+        scaleProfileTitle: "Profile suite",
+        scaleProfileNote: "Relationship-heavy paths with richer query coverage.",
+        scaleProfileFoot: "<strong>3.69x</strong> SF1 time at 3x data.",
+        scaleHotTitle: "Where the extra time goes",
+        scaleHotCopy: "SF3 divided by SF1 runtime. The dashed marker is the 3x linear target.",
+        scaleHotMeta: "3 data nodes · SF1/SF2/SF3 · same loader profile",
         footerStatus: "QuantaStream is being prepared for a future public release.",
         footerMore: "More soon.",
         toggleLabel: "Español",
         toggleAria: "Cambiar idioma a español"
       },
       es: {
+        navScale: "Escala",
         navAbout: "Sobre Guy",
         navContact: "Contacto",
         heroTitle: "SQL analítico nativo de bitmaps.",
@@ -602,6 +954,21 @@
         aboutP2: "En 2019, pasé a la organización de Data Platforms de Disney y empecé a desarrollar tecnología basada en bitmaps para gestionar y consultar datos de ingresos e inventario publicitario. Soy el único inventor de la patente estadounidense 12,086,136, <em>Techniques for Executing Join Operations Using Bitmap Indices</em>, y figuro como inventor en varias otras patentes estadounidenses sobre gestión de datos orientada a bitmaps, caché adaptiva y tecnologías relacionadas.",
         aboutP3: "En 2021, me convertí en Senior Manager de Data Platforms Engineering en Disney Streaming, donde lideré un equipo de 13 ingenieros que desarrollaba el Data Activation Framework.",
         aboutP4: "Me retiré de Disney en 2025, pero no de la ingeniería. Fundé QuantaStream para seguir explorando una idea que empezó durante mi etapa en Disney: que los bitmaps y los índices bit-sliced pueden ofrecer una base fundamentalmente distinta para SQL distribuido, ingestión en tiempo real y procesamiento analítico de consultas.",
+        scaleLabel: "Benchmark distribuido",
+        scaleTitle: "Entonces, ¿cómo escala QuantaStream?",
+        scaleIntro: "Un clúster AWS de tres nodos se cargó y probó con TPC-H SF1, SF2 y SF3 usando la misma configuración del cargador. La suite de solo lectura sigue de cerca el crecimiento de datos; la suite de perfil, más pesada, muestra los caminos intensivos en relaciones que seguimos ajustando.",
+        scaleLoadTitle: "Tiempo de carga",
+        scaleLoadNote: "Carga distribuida TPC-H completa, workers=3, batch=1000.",
+        scaleLoadFoot: "<strong>3.17x</strong> el tiempo de SF1 con 3x datos.",
+        scaleReadonlyTitle: "Suite de solo lectura",
+        scaleReadonlyNote: "La suite compacta de corrección y rendimiento.",
+        scaleReadonlyFoot: "<strong>3.13x</strong> el tiempo de SF1 con 3x datos.",
+        scaleProfileTitle: "Suite de perfil",
+        scaleProfileNote: "Caminos intensivos en relaciones con mayor cobertura de consultas.",
+        scaleProfileFoot: "<strong>3.69x</strong> el tiempo de SF1 con 3x datos.",
+        scaleHotTitle: "Dónde aparece el tiempo extra",
+        scaleHotCopy: "Runtime de SF3 dividido por SF1. La marca punteada es el objetivo lineal de 3x.",
+        scaleHotMeta: "3 nodos de datos · SF1/SF2/SF3 · mismo perfil de carga",
         footerStatus: "QuantaStream se está preparando para un futuro lanzamiento público.",
         footerMore: "Más novedades pronto.",
         toggleLabel: "English",
