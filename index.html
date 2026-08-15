@@ -130,10 +130,41 @@
     }
 
     .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
       color: #a9f2ff;
       border-color: rgba(8, 199, 223, 0.28);
       background: rgba(8, 199, 223, 0.10);
       font-weight: 760;
+    }
+
+    .flag-icon {
+      position: relative;
+      width: 18px;
+      height: 12px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.24);
+    }
+
+    .flag-us {
+      background: repeating-linear-gradient(to bottom, #b22234 0 1px, #fff 1px 2px);
+    }
+
+    .flag-us::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 7px;
+      background: #3c3b6e;
+    }
+
+    .flag-cr {
+      background: linear-gradient(to bottom, #002b7f 0 16.7%, #fff 16.7% 33.4%, #ce1126 33.4% 66.6%, #fff 66.6% 83.3%, #002b7f 83.3% 100%);
     }
 
     main {
@@ -478,7 +509,7 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 56%;
+      left: 88.2%;
       border-left: 1px dashed rgba(245, 248, 255, 0.52);
     }
 
@@ -654,7 +685,7 @@
         <a href="#about" data-i18n="navAbout">About Guy</a>
         <a href="mailto:info@quantastream.org" data-i18n="navContact">Contact</a>
         <a href="https://github.com/QuantaStream">GitHub</a>
-        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español">Español</button>
+        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español"><span class="flag-icon flag-cr" aria-hidden="true"></span><span>Español</span></button>
       </nav>
     </header>
 
@@ -729,31 +760,31 @@
     <section class="scale" id="scale">
       <p class="section-label" data-i18n="scaleLabel">Distributed benchmark</p>
       <h2 class="section-title" data-i18n="scaleTitle">So how does QuantaStream scale?</h2>
-      <p class="section-copy" data-i18n="scaleIntro">A three-node AWS cluster was loaded and tested at TPC-H SF1, SF2, and SF3 using the same loader settings. Read-only suite time tracks data growth closely; the heavier profile suite highlights the relationship-heavy paths we are still tuning.</p>
+      <p class="section-copy" data-i18n="scaleIntro">The latest three-node AWS run moved the data nodes to r7i.4xlarge and pushed the loader to 12 workers. At 3x the SF1 data, the read-only suite completed in 2.4x the time and the broader profile suite stayed essentially linear at 2.9x.</p>
 
       <div class="scale-visual" aria-label="QuantaStream SF1 to SF3 scale visualization">
         <div class="scale-curves">
           <div class="scale-panel">
             <h3 data-i18n="scaleLoadTitle">Load elapsed</h3>
-            <p class="scale-note" data-i18n="scaleLoadNote">Full TPC-H distributed load, workers=3, batch=1000.</p>
+            <p class="scale-note" data-i18n="scaleLoadNote">Full TPC-H distributed load after tuning loader concurrency.</p>
             <div class="scale-bars" aria-label="Load elapsed by TPC-H scale factor">
               <div class="scale-row">
                 <span>SF1</span>
-                <span class="bar-track"><span class="bar-fill" style="--bar:31.5%"></span></span>
-                <span class="scale-value">5.7m</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:22.6%"></span></span>
+                <span class="scale-value">4.9m</span>
               </div>
               <div class="scale-row">
                 <span>SF2</span>
-                <span class="bar-track"><span class="bar-fill" style="--bar:64.1%"></span></span>
-                <span class="scale-value">11.5m</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:76.0%"></span></span>
+                <span class="scale-value">16.5m</span>
               </div>
               <div class="scale-row">
                 <span>SF3</span>
                 <span class="bar-track"><span class="bar-fill" style="--bar:100%"></span></span>
-                <span class="scale-value">17.9m</span>
+                <span class="scale-value">21.7m</span>
               </div>
             </div>
-            <p class="scale-foot" data-i18n="scaleLoadFoot"><strong>3.17x</strong> SF1 time at 3x data.</p>
+            <p class="scale-foot" data-i18n="scaleLoadFoot"><strong>21.7m</strong> full SF3 load; r7i.4xlarge cleared the memory boundary.</p>
           </div>
 
           <div class="scale-panel">
@@ -762,21 +793,21 @@
             <div class="scale-bars" aria-label="Read-only benchmark suite elapsed by TPC-H scale factor">
               <div class="scale-row">
                 <span>SF1</span>
-                <span class="bar-track"><span class="bar-fill" style="--bar:32.0%"></span></span>
-                <span class="scale-value">10.8s</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:41.8%"></span></span>
+                <span class="scale-value">8.2s</span>
               </div>
               <div class="scale-row">
                 <span>SF2</span>
-                <span class="bar-track"><span class="bar-fill" style="--bar:67.0%"></span></span>
-                <span class="scale-value">22.6s</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:70.9%"></span></span>
+                <span class="scale-value">13.9s</span>
               </div>
               <div class="scale-row">
                 <span>SF3</span>
                 <span class="bar-track"><span class="bar-fill" style="--bar:100%"></span></span>
-                <span class="scale-value">33.7s</span>
+                <span class="scale-value">19.6s</span>
               </div>
             </div>
-            <p class="scale-foot" data-i18n="scaleReadonlyFoot"><strong>3.13x</strong> SF1 time at 3x data.</p>
+            <p class="scale-foot" data-i18n="scaleReadonlyFoot"><strong>2.39x</strong> SF1 time at 3x data.</p>
           </div>
 
           <div class="scale-panel">
@@ -785,67 +816,67 @@
             <div class="scale-bars" aria-label="Profile benchmark suite elapsed by TPC-H scale factor">
               <div class="scale-row">
                 <span>SF1</span>
-                <span class="bar-track"><span class="bar-fill" style="--bar:27.1%"></span></span>
-                <span class="scale-value">31.2s</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:33.9%"></span></span>
+                <span class="scale-value">14.3s</span>
               </div>
               <div class="scale-row">
                 <span>SF2</span>
-                <span class="bar-track"><span class="bar-fill" style="--bar:61.2%"></span></span>
-                <span class="scale-value">70.5s</span>
+                <span class="bar-track"><span class="bar-fill" style="--bar:74.2%"></span></span>
+                <span class="scale-value">31.3s</span>
               </div>
               <div class="scale-row">
                 <span>SF3</span>
                 <span class="bar-track"><span class="bar-fill" style="--bar:100%"></span></span>
-                <span class="scale-value">115s</span>
+                <span class="scale-value">42.2s</span>
               </div>
             </div>
-            <p class="scale-foot" data-i18n="scaleProfileFoot"><strong>3.69x</strong> SF1 time at 3x data.</p>
+            <p class="scale-foot" data-i18n="scaleProfileFoot"><strong>2.94x</strong> SF1 time at 3x data.</p>
           </div>
         </div>
 
         <div class="hot-paths">
           <div class="hot-paths-head">
             <div>
-              <h3 data-i18n="scaleHotTitle">Where the extra time goes</h3>
-              <p data-i18n="scaleHotCopy">SF3 divided by SF1 runtime. The dashed marker is the 3x linear target.</p>
+              <h3 data-i18n="scaleHotTitle">The useful part: query scale</h3>
+              <p data-i18n="scaleHotCopy">SF3 divided by SF1 runtime. The dashed marker is the 3x linear target; lower is better.</p>
             </div>
-            <p data-i18n="scaleHotMeta">3 data nodes · SF1/SF2/SF3 · same loader profile</p>
+            <p data-i18n="scaleHotMeta">3 data nodes · SF1/SF2/SF3 · final tuned runs</p>
           </div>
           <div class="ratio-grid" aria-label="Hot path runtime ratios from SF1 to SF3">
             <div class="ratio-row">
-              <span>Profile q19</span>
-              <span class="ratio-track"><span class="ratio-fill" style="--bar:100%"></span></span>
-              <span class="ratio-value">5.33x</span>
-            </div>
-            <div class="ratio-row">
-              <span>Readonly q19</span>
-              <span class="ratio-track"><span class="ratio-fill" style="--bar:98.3%"></span></span>
-              <span class="ratio-value">5.24x</span>
-            </div>
-            <div class="ratio-row">
               <span>Profile q5 same</span>
-              <span class="ratio-track"><span class="ratio-fill" style="--bar:75.6%"></span></span>
-              <span class="ratio-value">4.03x</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:92.4%"></span></span>
+              <span class="ratio-value">3.14x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Profile q5 formal</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:90.0%"></span></span>
+              <span class="ratio-value">3.06x</span>
+            </div>
+            <div class="ratio-row">
+              <span>Profile q5 combined</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:89.4%"></span></span>
+              <span class="ratio-value">3.04x</span>
             </div>
             <div class="ratio-row">
               <span>Profile q3</span>
-              <span class="ratio-track"><span class="ratio-fill" style="--bar:69.6%"></span></span>
-              <span class="ratio-value">3.71x</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:86.8%"></span></span>
+              <span class="ratio-value">2.95x</span>
             </div>
             <div class="ratio-row">
-              <span>Readonly q5</span>
-              <span class="ratio-track"><span class="ratio-fill" style="--bar:65.3%"></span></span>
-              <span class="ratio-value">3.48x</span>
+              <span>Readonly suite</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:70.3%"></span></span>
+              <span class="ratio-value">2.39x</span>
             </div>
             <div class="ratio-row">
-              <span>Readonly q3</span>
-              <span class="ratio-track"><span class="ratio-fill" style="--bar:62.0%"></span></span>
-              <span class="ratio-value">3.30x</span>
+              <span>Profile q19</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:51.2%"></span></span>
+              <span class="ratio-value">1.74x</span>
             </div>
             <div class="ratio-row">
-              <span>Readonly q21</span>
-              <span class="ratio-track"><span class="ratio-fill" style="--bar:47.7%"></span></span>
-              <span class="ratio-value">2.54x</span>
+              <span>Readonly q19</span>
+              <span class="ratio-track"><span class="ratio-fill" style="--bar:60.6%"></span></span>
+              <span class="ratio-value">2.06x</span>
             </div>
           </div>
         </div>
@@ -914,22 +945,22 @@
         aboutP4: "I retired from Disney in 2025, but not from engineering. I founded QuantaStream to continue exploring an idea that began during my time at Disney: that bitmap and bit-sliced indexing can provide a fundamentally different foundation for distributed SQL, real-time ingestion, and analytical query processing.",
         scaleLabel: "Distributed benchmark",
         scaleTitle: "So how does QuantaStream scale?",
-        scaleIntro: "A three-node AWS cluster was loaded and tested at TPC-H SF1, SF2, and SF3 using the same loader settings. Read-only suite time tracks data growth closely; the heavier profile suite highlights the relationship-heavy paths we are still tuning.",
+        scaleIntro: "The latest three-node AWS run moved the data nodes to r7i.4xlarge and pushed the loader to 12 workers. At 3x the SF1 data, the read-only suite completed in 2.4x the time and the broader profile suite stayed essentially linear at 2.9x.",
         scaleLoadTitle: "Load elapsed",
-        scaleLoadNote: "Full TPC-H distributed load, workers=3, batch=1000.",
-        scaleLoadFoot: "<strong>3.17x</strong> SF1 time at 3x data.",
+        scaleLoadNote: "Full TPC-H distributed load after tuning loader concurrency.",
+        scaleLoadFoot: "<strong>21.7m</strong> full SF3 load; r7i.4xlarge cleared the memory boundary.",
         scaleReadonlyTitle: "Read-only suite",
         scaleReadonlyNote: "The compact correctness/performance suite.",
-        scaleReadonlyFoot: "<strong>3.13x</strong> SF1 time at 3x data.",
+        scaleReadonlyFoot: "<strong>2.39x</strong> SF1 time at 3x data.",
         scaleProfileTitle: "Profile suite",
         scaleProfileNote: "Relationship-heavy paths with richer query coverage.",
-        scaleProfileFoot: "<strong>3.69x</strong> SF1 time at 3x data.",
-        scaleHotTitle: "Where the extra time goes",
-        scaleHotCopy: "SF3 divided by SF1 runtime. The dashed marker is the 3x linear target.",
-        scaleHotMeta: "3 data nodes · SF1/SF2/SF3 · same loader profile",
+        scaleProfileFoot: "<strong>2.94x</strong> SF1 time at 3x data.",
+        scaleHotTitle: "The useful part: query scale",
+        scaleHotCopy: "SF3 divided by SF1 runtime. The dashed marker is the 3x linear target; lower is better.",
+        scaleHotMeta: "3 data nodes · SF1/SF2/SF3 · final tuned runs",
         footerStatus: "QuantaStream is being prepared for a future public release.",
         footerMore: "More soon.",
-        toggleLabel: "Español",
+        toggleLabel: "<span class=\"flag-icon flag-cr\" aria-hidden=\"true\"></span><span>Español</span>",
         toggleAria: "Cambiar idioma a español"
       },
       es: {
@@ -956,22 +987,22 @@
         aboutP4: "Me retiré de Disney en 2025, pero no de la ingeniería. Fundé QuantaStream para seguir explorando una idea que empezó durante mi etapa en Disney: que los bitmaps y los índices bit-sliced pueden ofrecer una base fundamentalmente distinta para SQL distribuido, ingestión en tiempo real y procesamiento analítico de consultas.",
         scaleLabel: "Benchmark distribuido",
         scaleTitle: "Entonces, ¿cómo escala QuantaStream?",
-        scaleIntro: "Un clúster AWS de tres nodos se cargó y probó con TPC-H SF1, SF2 y SF3 usando la misma configuración del cargador. La suite de solo lectura sigue de cerca el crecimiento de datos; la suite de perfil, más pesada, muestra los caminos intensivos en relaciones que seguimos ajustando.",
+        scaleIntro: "La última corrida en AWS usó tres nodos de datos r7i.4xlarge y llevó el cargador a 12 workers. Con 3x los datos de SF1, la suite de solo lectura terminó en 2.4x el tiempo y la suite de perfil más amplia quedó prácticamente lineal en 2.9x.",
         scaleLoadTitle: "Tiempo de carga",
-        scaleLoadNote: "Carga distribuida TPC-H completa, workers=3, batch=1000.",
-        scaleLoadFoot: "<strong>3.17x</strong> el tiempo de SF1 con 3x datos.",
+        scaleLoadNote: "Carga distribuida TPC-H completa después de ajustar la concurrencia del cargador.",
+        scaleLoadFoot: "<strong>21.7m</strong> para la carga completa de SF3; r7i.4xlarge superó el límite de memoria.",
         scaleReadonlyTitle: "Suite de solo lectura",
         scaleReadonlyNote: "La suite compacta de corrección y rendimiento.",
-        scaleReadonlyFoot: "<strong>3.13x</strong> el tiempo de SF1 con 3x datos.",
+        scaleReadonlyFoot: "<strong>2.39x</strong> el tiempo de SF1 con 3x datos.",
         scaleProfileTitle: "Suite de perfil",
         scaleProfileNote: "Caminos intensivos en relaciones con mayor cobertura de consultas.",
-        scaleProfileFoot: "<strong>3.69x</strong> el tiempo de SF1 con 3x datos.",
-        scaleHotTitle: "Dónde aparece el tiempo extra",
-        scaleHotCopy: "Runtime de SF3 dividido por SF1. La marca punteada es el objetivo lineal de 3x.",
-        scaleHotMeta: "3 nodos de datos · SF1/SF2/SF3 · mismo perfil de carga",
+        scaleProfileFoot: "<strong>2.94x</strong> el tiempo de SF1 con 3x datos.",
+        scaleHotTitle: "Lo importante: escala de consultas",
+        scaleHotCopy: "Runtime de SF3 dividido por SF1. La marca punteada es el objetivo lineal de 3x; más bajo es mejor.",
+        scaleHotMeta: "3 nodos de datos · SF1/SF2/SF3 · corridas finales ajustadas",
         footerStatus: "QuantaStream se está preparando para un futuro lanzamiento público.",
         footerMore: "Más novedades pronto.",
-        toggleLabel: "English",
+        toggleLabel: "<span class=\"flag-icon flag-us\" aria-hidden=\"true\"></span><span>English</span>",
         toggleAria: "Switch language to English"
       }
     };
@@ -997,7 +1028,7 @@
       });
 
       if (languageToggle) {
-        languageToggle.textContent = translations[nextLanguage].toggleLabel;
+        languageToggle.innerHTML = translations[nextLanguage].toggleLabel;
         languageToggle.setAttribute("aria-label", translations[nextLanguage].toggleAria);
         languageToggle.setAttribute("aria-pressed", nextLanguage === "es" ? "true" : "false");
       }
