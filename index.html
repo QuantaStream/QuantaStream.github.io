@@ -1413,7 +1413,8 @@
       });
     }
 
-    setLanguage(localStorage.getItem("quantastream-language") || "en");
+    const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
+    setLanguage(translations[requestedLanguage] ? requestedLanguage : (localStorage.getItem("quantastream-language") || "en"));
   </script>
 </body>
 </html>

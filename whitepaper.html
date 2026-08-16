@@ -1223,7 +1223,8 @@ beyond unions and intersections</a></li>
       });
     }
 
-    setLanguage(localStorage.getItem("quantastream-whitepaper-language") || "en");
+    const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
+    setLanguage(translations[requestedLanguage] ? requestedLanguage : (localStorage.getItem("quantastream-whitepaper-language") || "en"));
   </script>
 </body>
 </html>
