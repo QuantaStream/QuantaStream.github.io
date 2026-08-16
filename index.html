@@ -349,6 +349,13 @@
       scroll-margin-top: 24px;
     }
 
+    .why {
+      margin-top: 86px;
+      padding: clamp(28px, 5vw, 54px) 0;
+      border-top: 1px solid var(--line);
+      scroll-margin-top: 24px;
+    }
+
     .section-label {
       margin: 0 0 12px;
       color: #a9f2ff;
@@ -457,6 +464,200 @@
     .scale-foot strong {
       color: var(--green);
       font-weight: 760;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(340px, 1.12fr);
+      gap: clamp(26px, 5vw, 56px);
+      align-items: start;
+      margin-top: 34px;
+    }
+
+    .why-copy {
+      color: var(--soft);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .why-copy p {
+      margin: 0 0 18px;
+    }
+
+    .why-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .why-points {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .why-point {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .why-point:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .why-index {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #061018;
+      background: var(--green);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .why-point h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .why-point p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .mysql-board {
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .mysql-board-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .mysql-board h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .mysql-board p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .mysql-badge {
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      border-radius: 999px;
+      color: #061018;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      font-size: 12px;
+      font-weight: 820;
+      white-space: nowrap;
+    }
+
+    .mysql-chart {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mysql-row {
+      display: grid;
+      grid-template-columns: minmax(112px, 150px) minmax(0, 1fr) 52px;
+      align-items: center;
+      gap: 12px;
+      color: var(--soft);
+      font-size: 13px;
+    }
+
+    .mysql-bars {
+      display: grid;
+      gap: 5px;
+    }
+
+    .mysql-track {
+      position: relative;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .mysql-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--bar);
+      border-radius: inherit;
+    }
+
+    .mysql-fill.mysql {
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .mysql-fill.qs {
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      box-shadow: 0 0 20px rgba(65, 214, 125, 0.22);
+    }
+
+    .mysql-win {
+      color: var(--green);
+      text-align: right;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mysql-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .legend-swatch {
+      width: 20px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .legend-swatch.qs {
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+    }
+
+    .why-footnote {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
     }
 
     .hot-paths {
@@ -620,6 +821,10 @@
         grid-template-columns: 1fr;
       }
 
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
       .about-photo {
         width: min(220px, 68vw);
       }
@@ -665,6 +870,19 @@
       .ratio-value {
         text-align: left;
       }
+
+      .mysql-board-head {
+        flex-direction: column;
+      }
+
+      .mysql-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .mysql-win {
+        text-align: left;
+      }
     }
   </style>
 </head>
@@ -681,6 +899,7 @@
         <span>QuantaStream</span>
       </a>
       <nav class="nav" aria-label="Primary navigation">
+        <a href="#why" data-i18n="navWhy">Why QuantaStream?</a>
         <a href="#scale" data-i18n="navScale">Scale</a>
         <a href="#about" data-i18n="navAbout">About Guy</a>
         <a href="mailto:info@quantastream.org" data-i18n="navContact">Contact</a>
@@ -756,6 +975,115 @@
         </div>
       </aside>
     </main>
+
+    <section class="why" id="why">
+      <p class="section-label" data-i18n="whyLabel">Why QuantaStream?</p>
+      <h2 class="section-title" data-i18n="whyTitle">A MySQL-shaped front door for bitmap-native analytics.</h2>
+      <p class="section-copy" data-i18n="whyIntro">The backdrop is simple: analytical SQL often spends too much time re-discovering sets of rows. QuantaStream stores those sets directly as compressed, queryable bitmap domains, then moves SQL execution toward set algebra, relationship vectors, and late materialization.</p>
+
+      <div class="why-grid">
+        <div>
+          <div class="why-copy" data-lang-panel="en">
+            <p>On the SF1 TPC-H read-only benchmark, a single-node QuantaStream server beat a 16-vCPU MySQL reference on 9 of 10 cases. The strongest wins came from the query shapes that matter most for analytical systems: grouped scans, graph-style joins, and relationship-heavy predicates.</p>
+            <p>The point is not to clone MySQL internals. The point is to offer a familiar MySQL-compatible endpoint while changing the physical representation underneath it.</p>
+          </div>
+          <div class="why-copy" data-lang-panel="es" lang="es" hidden>
+            <p>En el benchmark TPC-H de solo lectura SF1, un servidor QuantaStream de un solo nodo superó a una referencia MySQL de 16 vCPU en 9 de 10 casos. Las mayores ventajas aparecieron en las formas de consulta que más importan para sistemas analíticos: escaneos agrupados, joins con forma de grafo y predicados intensivos en relaciones.</p>
+            <p>La idea no es clonar los internos de MySQL. La idea es ofrecer un endpoint familiar compatible con MySQL mientras cambia la representación física debajo.</p>
+          </div>
+
+          <div class="why-points">
+            <div class="why-point">
+              <span class="why-index">1</span>
+              <div>
+                <h3 data-i18n="whyPoint1Title">Streaming-ready HTAP shape</h3>
+                <p data-i18n="whyPoint1Copy">QuantaStream is being built so operational ingestion and analytical queries can share the same compressed representation.</p>
+              </div>
+            </div>
+            <div class="why-point">
+              <span class="why-index">2</span>
+              <div>
+                <h3 data-i18n="whyPoint2Title">Domain-specific data mappers</h3>
+                <p data-i18n="whyPoint2Copy">Custom mappers can encode timestamps, enums, scaled numeric values, identities, and application-specific facts into directly queryable compressed form.</p>
+              </div>
+            </div>
+            <div class="why-point">
+              <span class="why-index">3</span>
+              <div>
+                <h3 data-i18n="whyPoint3Title">Relationship vectors as first-class data</h3>
+                <p data-i18n="whyPoint3Copy">Instead of treating joins as repeated row reconstruction, QuantaStream can preserve relationship structure and push work down into bitmap operations.</p>
+              </div>
+            </div>
+            <div class="why-point">
+              <span class="why-index">4</span>
+              <div>
+                <h3 data-i18n="whyPoint4Title">A path from one node to distributed execution</h3>
+                <p data-i18n="whyPoint4Copy">The same engine direction supports a single-node MySQL-compatible server and a distributed mode for larger analytical workloads.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mysql-board" aria-label="MySQL reference benchmark comparison">
+          <div class="mysql-board-head">
+            <div>
+              <h3 data-i18n="whyChartTitle">Single-node QuantaStream vs MySQL</h3>
+              <p data-i18n="whyChartCopy">SF1 TPC-H read-only benchmark, 16 vCPU AWS hosts. Lower runtime is better.</p>
+            </div>
+            <span class="mysql-badge" data-i18n="whyChartBadge">9 / 10 wins</span>
+          </div>
+
+          <div class="mysql-chart">
+            <div class="mysql-row">
+              <span data-i18n="whyChartQ5">Q5 graph join</span>
+              <span class="mysql-bars">
+                <span class="mysql-track" title="MySQL 10.996s"><span class="mysql-fill mysql" style="--bar:100%"></span></span>
+                <span class="mysql-track" title="QuantaStream 1.710s"><span class="mysql-fill qs" style="--bar:15.6%"></span></span>
+              </span>
+              <span class="mysql-win">6.4x</span>
+            </div>
+            <div class="mysql-row">
+              <span data-i18n="whyChartQ1">Q1 grouped scan</span>
+              <span class="mysql-bars">
+                <span class="mysql-track" title="MySQL 2.293s"><span class="mysql-fill mysql" style="--bar:100%"></span></span>
+                <span class="mysql-track" title="QuantaStream 0.288s"><span class="mysql-fill qs" style="--bar:12.6%"></span></span>
+              </span>
+              <span class="mysql-win">8.0x</span>
+            </div>
+            <div class="mysql-row">
+              <span data-i18n="whyChartQ3">Q3 revenue</span>
+              <span class="mysql-bars">
+                <span class="mysql-track" title="MySQL 6.315s"><span class="mysql-fill mysql" style="--bar:100%"></span></span>
+                <span class="mysql-track" title="QuantaStream 2.228s"><span class="mysql-fill qs" style="--bar:35.3%"></span></span>
+              </span>
+              <span class="mysql-win">2.8x</span>
+            </div>
+            <div class="mysql-row">
+              <span data-i18n="whyChartQ21">Q21 sibling exists</span>
+              <span class="mysql-bars">
+                <span class="mysql-track" title="MySQL 6.828s"><span class="mysql-fill mysql" style="--bar:100%"></span></span>
+                <span class="mysql-track" title="QuantaStream 2.221s"><span class="mysql-fill qs" style="--bar:32.5%"></span></span>
+              </span>
+              <span class="mysql-win">3.1x</span>
+            </div>
+            <div class="mysql-row">
+              <span data-i18n="whyChartQ6">Q6 filter sum</span>
+              <span class="mysql-bars">
+                <span class="mysql-track" title="MySQL 1.384s"><span class="mysql-fill mysql" style="--bar:100%"></span></span>
+                <span class="mysql-track" title="QuantaStream 0.475s"><span class="mysql-fill qs" style="--bar:34.3%"></span></span>
+              </span>
+              <span class="mysql-win">2.9x</span>
+            </div>
+          </div>
+
+          <div class="mysql-legend">
+            <span class="legend-item"><span class="legend-swatch"></span><span>MySQL</span></span>
+            <span class="legend-item"><span class="legend-swatch qs"></span><span>QuantaStream</span></span>
+          </div>
+          <p class="why-footnote" data-i18n="whyFootnote">Compatibility coverage is still expanding, but the endpoint shape is intentional: keep the familiar SQL surface while replacing row-first execution with compressed-domain execution.</p>
+        </div>
+      </div>
+    </section>
 
     <section class="scale" id="scale">
       <p class="section-label" data-i18n="scaleLabel">Distributed benchmark</p>
@@ -920,8 +1248,9 @@
     </footer>
   </div>
   <script>
-    const translations = {
+      const translations = {
       en: {
+        navWhy: "Why QuantaStream?",
         navScale: "Scale",
         navAbout: "About Guy",
         navContact: "Contact",
@@ -937,6 +1266,26 @@
         opProject: "PROJECT",
         workingThesis: "Working thesis",
         workingCopy: "SQL as constraint propagation over compressed bitmap domains.",
+        whyLabel: "Why QuantaStream?",
+        whyTitle: "A MySQL-shaped front door for bitmap-native analytics.",
+        whyIntro: "The backdrop is simple: analytical SQL often spends too much time re-discovering sets of rows. QuantaStream stores those sets directly as compressed, queryable bitmap domains, then moves SQL execution toward set algebra, relationship vectors, and late materialization.",
+        whyPoint1Title: "Streaming-ready HTAP shape",
+        whyPoint1Copy: "QuantaStream is being built so operational ingestion and analytical queries can share the same compressed representation.",
+        whyPoint2Title: "Domain-specific data mappers",
+        whyPoint2Copy: "Custom mappers can encode timestamps, enums, scaled numeric values, identities, and application-specific facts into directly queryable compressed form.",
+        whyPoint3Title: "Relationship vectors as first-class data",
+        whyPoint3Copy: "Instead of treating joins as repeated row reconstruction, QuantaStream can preserve relationship structure and push work down into bitmap operations.",
+        whyPoint4Title: "A path from one node to distributed execution",
+        whyPoint4Copy: "The same engine direction supports a single-node MySQL-compatible server and a distributed mode for larger analytical workloads.",
+        whyChartTitle: "Single-node QuantaStream vs MySQL",
+        whyChartCopy: "SF1 TPC-H read-only benchmark, 16 vCPU AWS hosts. Lower runtime is better.",
+        whyChartBadge: "9 / 10 wins",
+        whyChartQ5: "Q5 graph join",
+        whyChartQ1: "Q1 grouped scan",
+        whyChartQ3: "Q3 revenue",
+        whyChartQ21: "Q21 sibling exists",
+        whyChartQ6: "Q6 filter sum",
+        whyFootnote: "Compatibility coverage is still expanding, but the endpoint shape is intentional: keep the familiar SQL surface while replacing row-first execution with compressed-domain execution.",
         aboutLabel: "About the founder",
         aboutRole: "Principal Engineer and Founder<br>Playa Zancudo, Costa Rica",
         aboutP1: "I spent 21 years at The Walt Disney Company as a software engineer, architect, and engineering leader. My early work included Disney's Tea language compiler and Barista servlet container, helping migrate Disney web applications to Apache Tomcat, and leading development of FastCast - an asynchronous server cluster designed to support approximately 20 million concurrent connections for ESPN live-score feeds and GameCast sports visualizations.",
@@ -964,6 +1313,7 @@
         toggleAria: "Cambiar idioma a español"
       },
       es: {
+        navWhy: "¿Por qué QuantaStream?",
         navScale: "Escala",
         navAbout: "Sobre Guy",
         navContact: "Contacto",
@@ -979,6 +1329,26 @@
         opProject: "PROYECCIÓN",
         workingThesis: "Tesis de trabajo",
         workingCopy: "SQL como propagación de restricciones sobre dominios de bitmaps comprimidos.",
+        whyLabel: "¿Por qué QuantaStream?",
+        whyTitle: "Una puerta de entrada con forma de MySQL para analítica nativa de bitmaps.",
+        whyIntro: "El contexto es simple: el SQL analítico suele dedicar demasiado tiempo a redescubrir conjuntos de filas. QuantaStream almacena esos conjuntos directamente como dominios de bitmaps comprimidos y consultables, y mueve la ejecución hacia álgebra de conjuntos, vectores de relación y materialización tardía.",
+        whyPoint1Title: "Forma HTAP lista para streaming",
+        whyPoint1Copy: "QuantaStream se está construyendo para que la ingestión operacional y las consultas analíticas puedan compartir la misma representación comprimida.",
+        whyPoint2Title: "Mapeadores de datos específicos por dominio",
+        whyPoint2Copy: "Los mapeadores personalizados pueden codificar timestamps, enums, valores numéricos escalados, identidades y hechos específicos de una aplicación en forma comprimida directamente consultable.",
+        whyPoint3Title: "Vectores de relación como datos de primera clase",
+        whyPoint3Copy: "En lugar de tratar los joins como reconstrucción repetida de filas, QuantaStream puede preservar la estructura relacional y empujar el trabajo hacia operaciones de bitmap.",
+        whyPoint4Title: "Un camino de un nodo a ejecución distribuida",
+        whyPoint4Copy: "La misma dirección del motor soporta un servidor de un solo nodo compatible con MySQL y un modo distribuido para cargas analíticas más grandes.",
+        whyChartTitle: "QuantaStream de un nodo vs MySQL",
+        whyChartCopy: "Benchmark TPC-H SF1 de solo lectura, hosts AWS de 16 vCPU. Menor runtime es mejor.",
+        whyChartBadge: "9 / 10 victorias",
+        whyChartQ5: "Q5 join de grafo",
+        whyChartQ1: "Q1 escaneo agrupado",
+        whyChartQ3: "Q3 ingresos",
+        whyChartQ21: "Q21 existencia sibling",
+        whyChartQ6: "Q6 suma filtrada",
+        whyFootnote: "La cobertura de compatibilidad sigue creciendo, pero la forma del endpoint es intencional: conservar la superficie SQL familiar mientras se reemplaza la ejecución centrada en filas por ejecución sobre dominios comprimidos.",
         aboutLabel: "Sobre el fundador",
         aboutRole: "Ingeniero principal y fundador<br>Playa Zancudo, Costa Rica",
         aboutP1: "Pasé 21 años en The Walt Disney Company como ingeniero de software, arquitecto y líder de ingeniería. Mi trabajo inicial incluyó el compilador del lenguaje Tea de Disney y el contenedor de servlets Barista, ayudando a migrar aplicaciones web de Disney a Apache Tomcat y liderando el desarrollo de FastCast: un clúster de servidores asíncrono diseñado para soportar aproximadamente 20 millones de conexiones concurrentes para feeds de resultados en vivo de ESPN y visualizaciones deportivas de GameCast.",
