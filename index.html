@@ -915,7 +915,7 @@
           <p class="lede">QuantaStream explores how SQL can execute over compressed bitmap domains, BSI-backed values, and relationship vectors.</p>
           <p class="status">It is quietly taking shape as a systems project for analytical workloads, late materialization, and set-based query execution.</p>
           <div class="actions">
-            <a class="button primary" href="whitepaper.html">View the white paper</a>
+            <a class="button primary" href="whitepaper.html" data-localized-link>View the white paper</a>
             <a class="button secondary" href="mailto:info@quantastream.org">Start a conversation</a>
           </div>
         </div>
@@ -924,7 +924,7 @@
           <p class="lede">QuantaStream explora cómo SQL puede ejecutarse sobre dominios de bitmaps comprimidos, valores respaldados por BSI y vectores de relación.</p>
           <p class="status">Está tomando forma discretamente como un proyecto de sistemas para cargas analíticas, materialización tardía y ejecución de consultas basada en conjuntos.</p>
           <div class="actions">
-            <a class="button primary" href="whitepaper.html">Ver el white paper</a>
+            <a class="button primary" href="whitepaper.html" data-localized-link>Ver el white paper</a>
             <a class="button secondary" href="mailto:info@quantastream.org">Iniciar una conversación</a>
           </div>
         </div>
@@ -1402,6 +1402,11 @@
         languageToggle.setAttribute("aria-label", translations[nextLanguage].toggleAria);
         languageToggle.setAttribute("aria-pressed", nextLanguage === "es" ? "true" : "false");
       }
+
+      document.querySelectorAll("[data-localized-link]").forEach((link) => {
+        const baseHref = link.getAttribute("href").split("?")[0];
+        link.setAttribute("href", `${baseHref}?lang=${nextLanguage}`);
+      });
 
       localStorage.setItem("quantastream-language", nextLanguage);
     }
