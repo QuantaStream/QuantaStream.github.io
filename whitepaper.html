@@ -162,6 +162,10 @@
     article pre { overflow-x: auto; margin: 24px 0; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: rgba(4, 9, 18, 0.92); color: #c9f7dc; font-size: 14px; line-height: 1.55; }
     article code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
     article :not(pre) > code { padding: 2px 6px; border-radius: 6px; background: rgba(255, 255, 255, 0.08); color: #b8f4ff; font-size: .9em; }
+    article table { width: 100%; margin: 26px 0; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+    article th, article td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    article th { color: var(--ink); font-weight: 760; background: rgba(255, 255, 255, 0.05); }
+    article td:not(:first-child), article th:not(:first-child) { text-align: right; }
     article dl { margin: 0 0 28px; }
     article dt { margin-top: 18px; color: var(--ink); font-family: "SFMono-Regular", Consolas, monospace; font-weight: 760; }
     article dd { margin: 5px 0 0 20px; color: var(--muted); }
@@ -170,6 +174,7 @@
     @media (max-width: 880px) {
       .layout { grid-template-columns: 1fr; gap: 36px; }
       .toc { position: static; max-height: none; }
+      article table { display: block; overflow-x: auto; }
     }
     @media (max-width: 560px) {
       .shell { width: min(100% - 28px, 1160px); }
@@ -232,6 +237,8 @@
       <li><a href="#tpc-h-as-an-architectural-microcosm"
       id="toc-tpc-h-as-an-architectural-microcosm">TPC-H as an
       Architectural Microcosm</a></li>
+      <li><a href="#benchmark-checkpoint"
+      id="toc-benchmark-checkpoint">Benchmark Checkpoint</a></li>
       <li><a href="#patent-context" id="toc-patent-context">Patent
       Context</a></li>
       <li><a href="#relationship-to-roaring-bitmaps"
@@ -278,6 +285,8 @@
       <li><a href="#tpc-h-como-microcosmos-arquitectonico"
       id="toc-tpc-h-como-microcosmos-arquitectonico">TPC-H como
       microcosmos arquitectónico</a></li>
+      <li><a href="#checkpoint-de-benchmarks"
+      id="toc-checkpoint-de-benchmarks">Checkpoint de benchmarks</a></li>
       <li><a href="#contexto-de-patentes"
       id="toc-contexto-de-patentes">Contexto de patentes</a></li>
       <li><a href="#relacion-con-roaring-bitmaps"
@@ -296,12 +305,11 @@
       </ul>
       <article data-lang-panel="en" lang="en">
 <h1 id="bitmap-native-analytical-sql">Bitmap-Native Analytical SQL</h1>
-<p>Status: Draft v0.1, internal working paper Last updated:
-2026-07-19</p>
+<p>Status: Working paper v0.2. Last updated: 2026-08-21</p>
 <p>This paper is an engineering narrative for QuantaStream. It is not a
-legal analysis, patent claim chart, benchmark report, or final public
-positioning document. Its job is to preserve the architectural thesis
-while the engine is still moving quickly.</p>
+legal analysis or patent claim chart. Its job is to preserve the
+architectural thesis and connect that thesis to the current validation
+work.</p>
 <h2 id="executive-summary">Executive Summary</h2>
 <p>QuantaStream is built around a simple idea:</p>
 <blockquote>
@@ -317,6 +325,12 @@ rehydrated only after the candidate sets have already been narrowed.</p>
 <p>This is the core distinction: QuantaStream is not a row engine with
 bitmap indexes bolted on. It is a bitmap-domain execution engine with a
 SQL front end.</p>
+<p>That thesis is now backed by a more complete first-release posture: a
+single-node engine with a MySQL-compatible endpoint, descriptor-driven
+schemas, views, derived tables, temporary tables, CTAS materialization,
+prepared statement coverage, Workbench-friendly metadata, local
+WAL/backup/restore tooling, support bundles, and repeatable TPC-H
+validation at multiple scale factors.</p>
 <h2 id="motivation">Motivation</h2>
 <p>Traditional relational engines are extraordinarily capable, but their
 physical operators often revolve around moving, hashing, sorting, and
@@ -569,13 +583,54 @@ cares about:</p>
 <li>Date ranges, string dictionaries, numeric BSIs, grouped aggregates,
 correlated membership, same-row comparisons, and multi-hop joins.</li>
 </ul>
-<p>The current local work has shown that these query shapes can be
-represented by the new SQL, planner, runtime, relationship-vector, and
-materialization stack. That is not yet a benchmark claim. It is an
-important correctness and architecture signal: the engine is beginning
-to answer real analytical shapes through the bitmap-native path.</p>
-<p>The next proof point should be larger scale-factor data on controlled
-hardware, with reproducible MySQL and QuantaStream baselines.</p>
+<p>The current work has shown that these query shapes can be represented
+by the SQL, planner, runtime, relationship-vector, and materialization
+stack. This is no longer only a local smoke-test signal: the same query
+families have been loaded, profiled, and compared across single-node and
+distributed runs.</p>
+<h2 id="benchmark-checkpoint">Benchmark Checkpoint</h2>
+<p>The latest AWS distributed checkpoint was captured on 2026-08-15
+using three <code>r7i.4xlarge</code> data nodes plus a
+<code>bench-runner</code>, SQLRunner direct cluster RPC, 12 loader
+workers, and load batch size 1000.</p>
+<p>TPC-H SF1, SF2, and SF3 all loaded and passed the read-only and
+profile suites. <code>lineitem</code> load elapsed times were:</p>
+<table>
+<thead>
+<tr><th>Scale</th><th><code>lineitem</code> rows</th><th>Load elapsed</th></tr>
+</thead>
+<tbody>
+<tr><td>SF1</td><td>6,001,215</td><td>419s</td></tr>
+<tr><td>SF2</td><td>11,997,996</td><td>777s</td></tr>
+<tr><td>SF3</td><td>17,996,609</td><td>1302s</td></tr>
+</tbody>
+</table>
+<p>Representative profile medians from the same distributed
+checkpoint:</p>
+<table>
+<thead>
+<tr><th>Query shape</th><th>SF1</th><th>SF2</th><th>SF3</th></tr>
+</thead>
+<tbody>
+<tr><td>Q3 grouped revenue with order fields</td><td>1.936s</td><td>3.791s</td><td>5.465s</td></tr>
+<tr><td>Q5 same-nation combined graph count</td><td>3.252s</td><td>5.633s</td><td>8.355s</td></tr>
+<tr><td>Q19 formal discounted revenue</td><td>0.375s</td><td>0.467s</td><td>0.586s</td></tr>
+</tbody>
+</table>
+<p>The single-node MySQL compatibility lane also has an SF1 comparison
+against a 16-vCPU MySQL reference host. The important signal is not that
+every query shape is faster. It is that bitmap-native execution is
+already strong on the analytical shapes that match the architecture:
+broad grouping, selective bitmap reduction, and star-style relationship
+traversal. In that checkpoint, QuantaStream's single-node endpoint ran
+the compact Q5 combined graph count in 1.710s versus MySQL at 10.996s,
+Q3 grouped revenue limit in 2.228s versus 6.315s, Q1 grouped lineitem
+shape in 0.288s versus 2.293s, and Q6 discounted revenue in 0.475s
+versus 1.384s.</p>
+<p>These numbers are checkpoints, not permanent claims. Their value is
+that they are reproducible, tied to SQLRunner reports, and specific
+enough to protect the top-line performance baseline while compatibility
+work continues.</p>
 <h2 id="patent-context">Patent Context</h2>
 <p>The project has prior IP context around bitmap representation and
 bitmap-based query processing.</p>
@@ -647,18 +702,25 @@ through compressed bitmap domains until only the necessary rows
 remain.</p>
 </blockquote>
 <h2 id="current-limits">Current Limits</h2>
-<p>The architecture is promising, but the work is not done.</p>
+<p>The architecture is promising, and the current product surface is much
+more concrete than the first draft of this paper. The remaining limits
+are now release gates and follow-on engineering tracks:</p>
 <ul>
-<li>The cost optimizer is still early.</li>
-<li>SQL support is broadening, but not complete.</li>
-<li>Full MySQL compatibility is a goal, not a completed claim.</li>
-<li>Larger scale-factor TPC-H and compatibility benchmarks are still
-needed.</li>
-<li>The batch and streaming load paths need substantial work.</li>
-<li>Startup time and shard manifest handling need continued
-hardening.</li>
-<li>Future BSI library work remains an optimization frontier, but the
-current same-row comparison path is available from the selected Roaring
+<li>The cost optimizer is still early, even though several star-query
+reduction and relationship-artifact improvements are already
+validated.</li>
+<li>QuantaStream supports a focused MySQL-compatible SQL surface, not a
+full MySQL clone.</li>
+<li>TPC-H SF1/SF2/SF3 benchmarks are repeatable, but each release
+candidate still needs a clean performance pass before public numbers are
+refreshed.</li>
+<li>Batch loading is validated at SF1-SF3; live streaming ingest needs
+its own product-grade demo and recovery story.</li>
+<li>Local WAL, backup, restore, support bundles, and operator preflights
+are now part of the 1.0 posture; distributed backup barriers and cloud
+storage adapters remain follow-on work.</li>
+<li>BSI library work remains an optimization frontier, but the current
+same-row comparison path is available from the selected Roaring
 dependency.</li>
 <li>High-cardinality string representation still needs the StringLexBSI
 design to mature.</li>
@@ -669,19 +731,20 @@ crutch the current engine requires.</li>
 <h2 id="near-term-proof-points">Near-Term Proof Points</h2>
 <p>The most useful next proof points are:</p>
 <ol type="1">
-<li>Keep the TPC-H query suite green in both direct and standard
-modes.</li>
-<li>Run reproducible MySQL versus QuantaStream compatibility and
-benchmark labs.</li>
-<li>Add larger scale-factor data on controlled hardware.</li>
-<li>Finish BSI comparison work with upstream-quality tests and
-benchmarks.</li>
-<li>Improve load-path throughput before relying on larger public
-demos.</li>
+<li>Keep the TPC-H SF1/SF2/SF3 benchmark lane repeatable across release
+candidates.</li>
+<li>Finish release-grade WAL, backup, restore, and startup replay
+validation.</li>
+<li>Keep the binary artifact, getting-started runbook, support bundle,
+and <code>doctor local</code> path boring and repeatable.</li>
+<li>Expand MySQL client compatibility with Java/JDBC, Node.js, and
+Tableau-style metadata coverage.</li>
+<li>Build the first streaming ingest demo around real insert/update
+pressure and recovery semantics.</li>
 <li>Continue reducing materialization where a bitmap or BSI primitive
 can answer directly.</li>
-<li>Start cost-based optimization from table cardinality, predicate
-selectivity, and relationship-vector reduction cost.</li>
+<li>Continue cost-based optimization from table cardinality, predicate
+selectivity, relationship-vector reduction cost, and node locality.</li>
 </ol>
 <h2 id="conclusion">Conclusion</h2>
 <p>QuantaStream's core algebra is compact:</p>
@@ -719,13 +782,12 @@ beyond unions and intersections</a></li>
       </article>
       <article data-lang-panel="es" lang="es" hidden>
 <h1 id="sql-analitico-nativo-de-bitmaps">SQL analítico nativo de bitmaps</h1>
-<p>Estado: borrador v0.1, documento interno de trabajo. Última
-actualización: 2026-07-19</p>
+<p>Estado: documento de trabajo v0.2. Última actualización:
+2026-08-21</p>
 <p>Este documento es una narrativa de ingeniería para QuantaStream. No
-es un análisis legal, un cuadro de reivindicaciones de patente, un
-informe de benchmarks ni un documento final de posicionamiento público.
-Su propósito es preservar la tesis arquitectónica mientras el motor
-sigue evolucionando rápidamente.</p>
+es un análisis legal ni un cuadro de reivindicaciones de patente. Su
+propósito es preservar la tesis arquitectónica y conectar esa tesis con
+el trabajo actual de validación.</p>
 <h2 id="resumen-ejecutivo">Resumen ejecutivo</h2>
 <p>QuantaStream se construye alrededor de una idea simple:</p>
 <blockquote>
@@ -743,6 +805,12 @@ candidatos ya se han reducido.</p>
 <p>Esa es la distinción central: QuantaStream no es un motor de filas
 con índices bitmap añadidos encima. Es un motor de ejecución sobre
 dominios bitmap con una interfaz SQL.</p>
+<p>Esa tesis ahora está respaldada por una postura de primera versión más
+completa: un motor de nodo único con endpoint compatible con MySQL,
+esquemas declarativos, views, tablas derivadas, tablas temporales,
+materialización CTAS, cobertura de prepared statements, metadata amigable
+para Workbench, herramientas locales de WAL/backup/restore, support
+bundles y validación TPC-H repetible en varios scale factors.</p>
 <h2 id="motivacion">Motivación</h2>
 <p>Los motores relacionales tradicionales son extraordinariamente
 capaces, pero sus operadores físicos suelen girar alrededor de mover,
@@ -1011,15 +1079,56 @@ QuantaStream:</p>
 agregados agrupados, membresía correlacionada, comparaciones dentro de
 la misma fila y joins de múltiples saltos.</li>
 </ul>
-<p>El trabajo local actual ha mostrado que estas formas de consulta
-pueden representarse mediante la nueva pila SQL, planner, runtime,
-relationship-vector y materialización. Eso todavía no es una afirmación
-de benchmark. Es una señal importante de corrección y arquitectura: el
-motor está empezando a responder formas analíticas reales a través de la
-ruta bitmap-native.</p>
-<p>El siguiente punto de prueba debería ser datos con scale factor más
-grande en hardware controlado, con baselines reproducibles de MySQL y
-QuantaStream.</p>
+<p>El trabajo actual ha mostrado que estas formas de consulta pueden
+representarse mediante la pila SQL, planner, runtime, relationship-vector
+y materialización. Esto ya no es solo una señal de smoke test local: las
+mismas familias de consultas se han cargado, perfilado y comparado en
+ejecuciones de nodo único y distribuidas.</p>
+<h2 id="checkpoint-de-benchmarks">Checkpoint de benchmarks</h2>
+<p>El checkpoint distribuido más reciente en AWS se capturó el
+2026-08-15 usando tres nodos de datos <code>r7i.4xlarge</code> más un
+<code>bench-runner</code>, SQLRunner con RPC directo al cluster, 12
+workers de carga y batch size 1000.</p>
+<p>TPC-H SF1, SF2 y SF3 cargaron correctamente y pasaron las suites
+read-only y profile. Los tiempos de carga de <code>lineitem</code>
+fueron:</p>
+<table>
+<thead>
+<tr><th>Scale</th><th>Filas de <code>lineitem</code></th><th>Tiempo de carga</th></tr>
+</thead>
+<tbody>
+<tr><td>SF1</td><td>6,001,215</td><td>419s</td></tr>
+<tr><td>SF2</td><td>11,997,996</td><td>777s</td></tr>
+<tr><td>SF3</td><td>17,996,609</td><td>1302s</td></tr>
+</tbody>
+</table>
+<p>Medianas representativas de profile desde el mismo checkpoint
+distribuido:</p>
+<table>
+<thead>
+<tr><th>Forma de consulta</th><th>SF1</th><th>SF2</th><th>SF3</th></tr>
+</thead>
+<tbody>
+<tr><td>Q3 grouped revenue con campos de order</td><td>1.936s</td><td>3.791s</td><td>5.465s</td></tr>
+<tr><td>Q5 same-nation combined graph count</td><td>3.252s</td><td>5.633s</td><td>8.355s</td></tr>
+<tr><td>Q19 formal discounted revenue</td><td>0.375s</td><td>0.467s</td><td>0.586s</td></tr>
+</tbody>
+</table>
+<p>La ruta de compatibilidad MySQL de nodo único también tiene una
+comparación SF1 contra un host MySQL de referencia con 16 vCPU. La señal
+importante no es que cada forma de consulta sea más rápida. Es que la
+ejecución bitmap-native ya es fuerte en las formas analíticas que
+coinciden con la arquitectura: agrupación amplia, reducción bitmap
+selectiva y recorrido de relaciones estilo star schema. En ese
+checkpoint, el endpoint de nodo único de QuantaStream ejecutó el Q5
+combined graph count compacto en 1.710s frente a MySQL en 10.996s, Q3
+grouped revenue limit en 2.228s frente a 6.315s, Q1 grouped lineitem
+shape en 0.288s frente a 2.293s, y Q6 discounted revenue en 0.475s
+frente a 1.384s.</p>
+<p>Estos números son checkpoints, no afirmaciones permanentes. Su valor
+es que son reproducibles, están ligados a reportes de SQLRunner y son lo
+suficientemente específicos para proteger el baseline de performance de
+alto nivel mientras continúa el trabajo de compatibilidad.</p>
 <h2 id="contexto-de-patentes">Contexto de patentes</h2>
 <p>El proyecto tiene contexto previo de IP alrededor de representación
 bitmap y procesamiento de consultas basado en bitmaps.</p>
@@ -1093,19 +1202,25 @@ través de dominios de bitmaps comprimidos hasta que solo quedan las filas
 necesarias.</p>
 </blockquote>
 <h2 id="limites-actuales">Límites actuales</h2>
-<p>La arquitectura es prometedora, pero el trabajo no está terminado.</p>
+<p>La arquitectura es prometedora, y la superficie actual del producto es
+mucho más concreta que en el primer borrador de este documento. Los
+límites restantes son ahora gates de release y líneas de ingeniería
+posteriores:</p>
 <ul>
-<li>El optimizador de costos todavía está en una etapa temprana.</li>
-<li>El soporte SQL se está ampliando, pero no está completo.</li>
-<li>La compatibilidad total con MySQL es una meta, no una afirmación
-completada.</li>
-<li>Todavía se necesitan benchmarks TPC-H y de compatibilidad con scale
-factors más grandes.</li>
-<li>Las rutas de carga por lotes y streaming necesitan trabajo
-sustancial.</li>
-<li>El tiempo de arranque y el manejo del manifiesto de shards necesitan
-seguir endureciéndose.</li>
-<li>El trabajo futuro en la biblioteca BSI sigue siendo una frontera de
+<li>El optimizador de costos todavía está en una etapa temprana, aunque
+varias mejoras de reducción para star queries y relationship artifacts ya
+están validadas.</li>
+<li>QuantaStream soporta una superficie SQL enfocada y compatible con
+MySQL, no un clon completo de MySQL.</li>
+<li>Los benchmarks TPC-H SF1/SF2/SF3 son repetibles, pero cada release
+candidate todavía necesita una pasada limpia de performance antes de
+refrescar números públicos.</li>
+<li>La carga por lotes está validada en SF1-SF3; el ingest streaming en
+vivo necesita su propia demo de producto y su historia de recuperación.</li>
+<li>WAL local, backup, restore, support bundles y preflights de operador
+ya son parte de la postura 1.0; barreras distribuidas de backup y
+adaptadores de almacenamiento cloud quedan como trabajo posterior.</li>
+<li>El trabajo en la biblioteca BSI sigue siendo una frontera de
 optimización, pero la ruta actual de comparación dentro de la misma fila
 está disponible desde la dependencia Roaring seleccionada.</li>
 <li>La representación de strings de alta cardinalidad todavía necesita
@@ -1117,20 +1232,21 @@ futura, no una muleta que el motor actual requiera.</li>
 <h2 id="puntos-de-prueba-a-corto-plazo">Puntos de prueba a corto plazo</h2>
 <p>Los próximos puntos de prueba más útiles son:</p>
 <ol type="1">
-<li>Mantener la suite de consultas TPC-H en verde tanto en modo direct
-como standard.</li>
-<li>Ejecutar laboratorios reproducibles de compatibilidad y benchmark
-MySQL versus QuantaStream.</li>
-<li>Añadir datos con scale factors más grandes en hardware controlado.</li>
-<li>Completar el trabajo de comparación BSI con pruebas y benchmarks de
-calidad upstream.</li>
-<li>Mejorar el throughput de la ruta de carga antes de depender de demos
-públicas más grandes.</li>
+<li>Mantener repetible la línea de benchmarks TPC-H SF1/SF2/SF3 a través
+de release candidates.</li>
+<li>Terminar la validación release-grade de WAL, backup, restore y
+startup replay.</li>
+<li>Mantener aburrida y repetible la ruta del artefacto binario, el
+getting-started runbook, el support bundle y <code>doctor local</code>.</li>
+<li>Expandir la compatibilidad de clientes MySQL con Java/JDBC, Node.js y
+cobertura de metadata estilo Tableau.</li>
+<li>Construir la primera demo de ingest streaming alrededor de presión
+real de insert/update y semántica de recuperación.</li>
 <li>Seguir reduciendo materialización donde una primitiva bitmap o BSI
 pueda responder directamente.</li>
-<li>Iniciar la optimización basada en costos desde cardinalidad de tabla,
-selectividad de predicados y costo de reducción por relationship
-vector.</li>
+<li>Continuar la optimización basada en costos desde cardinalidad de
+tabla, selectividad de predicados, costo de reducción por relationship
+vector y localidad de nodos.</li>
 </ol>
 <h2 id="conclusion-es">Conclusión</h2>
 <p>El álgebra central de QuantaStream es compacta:</p>
