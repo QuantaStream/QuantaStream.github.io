@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Start a Conversation | QuantaStream</title>
+  <meta name="description" content="Start a conversation with QuantaStream about a POC, support, benchmarks, streaming data, or bitmap-native SQL.">
+  <link rel="stylesheet" href="assets/page-shell.css">
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="index.html" data-localized-link aria-label="QuantaStream home">
+        <span class="mark" aria-hidden="true">
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+        </span>
+        <span>QuantaStream</span>
+      </a>
+      <nav class="top-actions" aria-label="Primary navigation">
+        <a class="pill" href="index.html" data-localized-link data-i18n="homeLink">Home</a>
+        <a class="pill" href="news.html" data-localized-link data-i18n="newsLink">News</a>
+        <a class="pill" href="faq.html" data-localized-link data-i18n="faqLink">FAQ</a>
+        <a class="pill" href="whitepaper.html" data-localized-link data-i18n="whitepaperLink">White paper</a>
+        <a class="pill" href="https://github.com/QuantaStream/quantastream">GitHub</a>
+        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español"><span class="flag-icon flag-cr" aria-hidden="true"></span><span>Español</span></button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="kicker" data-i18n="kicker">Start a conversation</p>
+        <h1 data-i18n="title">Tell us what you want to explore.</h1>
+        <p class="lede" data-i18n="lede">POCs, support, benchmark questions, streaming data ideas, and bitmap-native SQL architecture are all fair game.</p>
+      </section>
+
+      <section class="contact-layout">
+        <div class="item">
+          <h2 data-i18n="topicsTitle">Good reasons to reach out</h2>
+          <p data-i18n="topicsIntro">A short note is enough. The most useful conversations usually start with a workload, a data shape, or a compatibility question.</p>
+          <div class="topic-list" data-lang-panel="en">
+            <p>Ask about a proof of concept for a real analytical workload.</p>
+            <p>Request help trying the public preview or interpreting benchmark results.</p>
+            <p>Talk through a streaming or HTAP use case.</p>
+            <p>Report a MySQL client, Workbench, or driver compatibility gap.</p>
+          </div>
+          <div class="topic-list" data-lang-panel="es" hidden>
+            <p>Preguntar por una prueba de concepto con una carga analítica real.</p>
+            <p>Pedir ayuda para probar el public preview o interpretar benchmarks.</p>
+            <p>Conversar sobre un caso de streaming o HTAP.</p>
+            <p>Reportar una brecha de compatibilidad con clientes MySQL, Workbench o drivers.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <h2 data-i18n="formTitle">Send a note</h2>
+          <p data-i18n="formIntro">This form opens your email client with the message prefilled.</p>
+          <form id="contact-form">
+            <label>
+              <span data-i18n="topicLabel">Topic</span>
+              <select name="topic" id="topic" required>
+                <option value="POC" data-i18n="topicPoc">Ask about a POC</option>
+                <option value="Support" data-i18n="topicSupport">Request support</option>
+                <option value="Benchmarks" data-i18n="topicBenchmarks">Discuss benchmark results</option>
+                <option value="Streaming" data-i18n="topicStreaming">Talk about streaming or HTAP</option>
+                <option value="Compatibility" data-i18n="topicCompatibility">Report a compatibility gap</option>
+                <option value="Other" data-i18n="topicOther">Something else</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="nameLabel">Name</span>
+              <input name="name" autocomplete="name" required>
+            </label>
+            <label>
+              <span data-i18n="emailLabel">Email</span>
+              <input name="email" type="email" autocomplete="email" required>
+            </label>
+            <label>
+              <span data-i18n="orgLabel">Organization</span>
+              <input name="organization" autocomplete="organization">
+            </label>
+            <label>
+              <span data-i18n="messageLabel">Message</span>
+              <textarea name="message" required></textarea>
+            </label>
+            <button class="button" type="submit" data-i18n="submitLabel">Open email</button>
+          </form>
+          <p style="margin-top: 16px;" data-i18n="directEmail">Prefer plain email? Write to <a href="mailto:info@quantastream.org">info@quantastream.org</a>.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer data-i18n="footer">QuantaStream · Bitmap-native analytical SQL</footer>
+  </div>
+
+  <script>
+    window.quantastreamPageTranslations = {
+      en: {
+        homeLink: "Home",
+        newsLink: "News",
+        faqLink: "FAQ",
+        whitepaperLink: "White paper",
+        kicker: "Start a conversation",
+        title: "Tell us what you want to explore.",
+        lede: "POCs, support, benchmark questions, streaming data ideas, and bitmap-native SQL architecture are all fair game.",
+        topicsTitle: "Good reasons to reach out",
+        topicsIntro: "A short note is enough. The most useful conversations usually start with a workload, a data shape, or a compatibility question.",
+        formTitle: "Send a note",
+        formIntro: "This form opens your email client with the message prefilled.",
+        topicLabel: "Topic",
+        topicPoc: "Ask about a POC",
+        topicSupport: "Request support",
+        topicBenchmarks: "Discuss benchmark results",
+        topicStreaming: "Talk about streaming or HTAP",
+        topicCompatibility: "Report a compatibility gap",
+        topicOther: "Something else",
+        nameLabel: "Name",
+        emailLabel: "Email",
+        orgLabel: "Organization",
+        messageLabel: "Message",
+        submitLabel: "Open email",
+        directEmail: "Prefer plain email? Write to <a href=\"mailto:info@quantastream.org\">info@quantastream.org</a>.",
+        footer: "QuantaStream · Bitmap-native analytical SQL",
+        toggleLabel: "<span class=\"flag-icon flag-cr\" aria-hidden=\"true\"></span><span>Español</span>",
+        toggleAria: "Cambiar idioma a español"
+      },
+      es: {
+        homeLink: "Inicio",
+        newsLink: "Noticias",
+        faqLink: "FAQ",
+        whitepaperLink: "White paper",
+        kicker: "Iniciar una conversación",
+        title: "Cuéntanos qué quieres explorar.",
+        lede: "POCs, soporte, preguntas sobre benchmarks, ideas de streaming y arquitectura SQL nativa de bitmaps: todo entra.",
+        topicsTitle: "Buenos motivos para escribir",
+        topicsIntro: "Una nota breve alcanza. Las conversaciones más útiles suelen empezar con una carga de trabajo, una forma de datos o una pregunta de compatibilidad.",
+        formTitle: "Enviar una nota",
+        formIntro: "Este formulario abre tu cliente de correo con el mensaje preparado.",
+        topicLabel: "Tema",
+        topicPoc: "Preguntar por un POC",
+        topicSupport: "Solicitar soporte",
+        topicBenchmarks: "Conversar sobre benchmarks",
+        topicStreaming: "Hablar de streaming o HTAP",
+        topicCompatibility: "Reportar una brecha de compatibilidad",
+        topicOther: "Otro tema",
+        nameLabel: "Nombre",
+        emailLabel: "Email",
+        orgLabel: "Organización",
+        messageLabel: "Mensaje",
+        submitLabel: "Abrir email",
+        directEmail: "¿Prefieres email directo? Escribe a <a href=\"mailto:info@quantastream.org\">info@quantastream.org</a>.",
+        footer: "QuantaStream · SQL analítico nativo de bitmaps",
+        toggleLabel: "<span class=\"flag-icon flag-us\" aria-hidden=\"true\"></span><span>English</span>",
+        toggleAria: "Switch language to English"
+      }
+    };
+
+    const mailText = {
+      en: {
+        subject: "QuantaStream conversation",
+        name: "Name",
+        email: "Email",
+        organization: "Organization",
+        topic: "Topic",
+        message: "Message"
+      },
+      es: {
+        subject: "Conversación sobre QuantaStream",
+        name: "Nombre",
+        email: "Email",
+        organization: "Organización",
+        topic: "Tema",
+        message: "Mensaje"
+      }
+    };
+
+    document.getElementById("contact-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const language = document.documentElement.lang === "es" ? "es" : "en";
+      const text = mailText[language];
+      const topic = form.topic.options[form.topic.selectedIndex].text;
+      const subject = `${text.subject}: ${topic}`;
+      const body = [
+        `${text.name}: ${form.name.value}`,
+        `${text.email}: ${form.email.value}`,
+        `${text.organization}: ${form.organization.value || "-"}`,
+        `${text.topic}: ${topic}`,
+        "",
+        `${text.message}:`,
+        form.message.value
+      ].join("\n");
+      window.location.href = `mailto:info@quantastream.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
+  <script src="assets/page-common.js"></script>
+</body>
+</html>

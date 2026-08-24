@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Latest News | QuantaStream</title>
+  <meta name="description" content="Latest QuantaStream release notes, project updates, and benchmark news.">
+  <link rel="stylesheet" href="assets/page-shell.css">
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="index.html" data-localized-link aria-label="QuantaStream home">
+        <span class="mark" aria-hidden="true">
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+        </span>
+        <span>QuantaStream</span>
+      </a>
+      <nav class="top-actions" aria-label="Primary navigation">
+        <a class="pill" href="index.html" data-localized-link data-i18n="homeLink">Home</a>
+        <a class="pill" href="faq.html" data-localized-link data-i18n="faqLink">FAQ</a>
+        <a class="pill" href="whitepaper.html" data-localized-link data-i18n="whitepaperLink">White paper</a>
+        <a class="pill" href="contact.html" data-localized-link data-i18n="contactLink">Contact</a>
+        <a class="pill" href="https://github.com/QuantaStream/quantastream">GitHub</a>
+        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español"><span class="flag-icon flag-cr" aria-hidden="true"></span><span>Español</span></button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="kicker" data-i18n="kicker">Latest news</p>
+        <h1 data-i18n="title">Release notes and project updates.</h1>
+        <p class="lede" data-i18n="lede">Short, direct updates about QuantaStream releases, benchmarks, and engineering milestones.</p>
+      </section>
+
+      <section class="grid" id="news-list" aria-live="polite"></section>
+    </main>
+
+    <footer data-i18n="footer">QuantaStream · Bitmap-native analytical SQL</footer>
+  </div>
+
+  <script src="assets/news-data.js"></script>
+  <script>
+    window.quantastreamPageTranslations = {
+      en: {
+        homeLink: "Home",
+        faqLink: "FAQ",
+        whitepaperLink: "White paper",
+        contactLink: "Contact",
+        kicker: "Latest news",
+        title: "Release notes and project updates.",
+        lede: "Short, direct updates about QuantaStream releases, benchmarks, and engineering milestones.",
+        footer: "QuantaStream · Bitmap-native analytical SQL",
+        toggleLabel: "<span class=\"flag-icon flag-cr\" aria-hidden=\"true\"></span><span>Español</span>",
+        toggleAria: "Cambiar idioma a español"
+      },
+      es: {
+        homeLink: "Inicio",
+        faqLink: "FAQ",
+        whitepaperLink: "White paper",
+        contactLink: "Contacto",
+        kicker: "Noticias",
+        title: "Lanzamientos y avances del proyecto.",
+        lede: "Actualizaciones breves y directas sobre releases, benchmarks e hitos de ingeniería de QuantaStream.",
+        footer: "QuantaStream · SQL analítico nativo de bitmaps",
+        toggleLabel: "<span class=\"flag-icon flag-us\" aria-hidden=\"true\"></span><span>English</span>",
+        toggleAria: "Switch language to English"
+      }
+    };
+
+    function localizedHref(href, language) {
+      if (!href || href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("#")) {
+        return href;
+      }
+      return `${href.split("?")[0]}?lang=${language}`;
+    }
+
+    window.renderPageContent = function renderPageContent(language) {
+      const list = document.getElementById("news-list");
+      const entries = (window.quantastreamNews && window.quantastreamNews[language]) || window.quantastreamNews.en;
+      list.innerHTML = entries.map((entry) => {
+        const links = entry.links.map((link, index) => `
+          <a class="button ${index === 0 ? "" : "secondary"}" href="${localizedHref(link.href, language)}">${link.label}</a>
+        `).join("");
+        return `
+          <article class="item">
+            <p class="meta">${entry.label} · ${entry.date}</p>
+            <h2>${entry.title}</h2>
+            <p>${entry.summary}</p>
+            <div class="link-row">${links}</div>
+          </article>
+        `;
+      }).join("");
+    };
+  </script>
+  <script src="assets/page-common.js"></script>
+</body>
+</html>

@@ -197,7 +197,11 @@
         <span>QuantaStream</span>
       </a>
       <div class="top-actions">
-        <a class="back" href="index.html" data-i18n="backHome">Back to home</a>
+        <a class="back" href="index.html" data-localized-link data-i18n="backHome">Back to home</a>
+        <a class="back" href="news.html" data-localized-link data-i18n="newsLink">News</a>
+        <a class="back" href="faq.html" data-localized-link data-i18n="faqLink">FAQ</a>
+        <a class="back" href="contact.html" data-localized-link data-i18n="contactLink">Contact</a>
+        <a class="back" href="https://github.com/QuantaStream/quantastream">GitHub</a>
         <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español"><span class="flag-icon flag-cr" aria-hidden="true"></span><span>Español</span></button>
       </div>
     </header>
@@ -1290,6 +1294,9 @@ beyond unions and intersections</a></li>
     const translations = {
       en: {
         backHome: "Back to home",
+        newsLink: "News",
+        faqLink: "FAQ",
+        contactLink: "Contact",
         kicker: "Engineering white paper",
         heroTitle: "Bitmap-Native Analytical SQL",
         footer: "QuantaStream · Bitmap-native analytical SQL",
@@ -1298,6 +1305,9 @@ beyond unions and intersections</a></li>
       },
       es: {
         backHome: "Volver al inicio",
+        newsLink: "Noticias",
+        faqLink: "FAQ",
+        contactLink: "Contacto",
         kicker: "White paper de ingeniería",
         heroTitle: "SQL analítico nativo de bitmaps",
         footer: "QuantaStream · SQL analítico nativo de bitmaps",
@@ -1329,6 +1339,12 @@ beyond unions and intersections</a></li>
         languageToggle.setAttribute("aria-pressed", nextLanguage === "es" ? "true" : "false");
       }
 
+      document.querySelectorAll("[data-localized-link]").forEach((link) => {
+        const baseHref = link.getAttribute("href").split("?")[0];
+        link.setAttribute("href", `${baseHref}?lang=${nextLanguage}`);
+      });
+
+      localStorage.setItem("quantastream-language", nextLanguage);
       localStorage.setItem("quantastream-whitepaper-language", nextLanguage);
     }
 
@@ -1340,7 +1356,8 @@ beyond unions and intersections</a></li>
     }
 
     const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
-    setLanguage(translations[requestedLanguage] ? requestedLanguage : (localStorage.getItem("quantastream-whitepaper-language") || "en"));
+    const savedLanguage = localStorage.getItem("quantastream-language") || localStorage.getItem("quantastream-whitepaper-language") || "en";
+    setLanguage(translations[requestedLanguage] ? requestedLanguage : savedLanguage);
   </script>
 </body>
 </html>

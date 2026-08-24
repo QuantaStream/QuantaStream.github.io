@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ | QuantaStream</title>
+  <meta name="description" content="Frequently asked questions about QuantaStream, the bitmap-native analytical SQL engine.">
+  <link rel="stylesheet" href="assets/page-shell.css">
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="index.html" data-localized-link aria-label="QuantaStream home">
+        <span class="mark" aria-hidden="true">
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+          <span class="bit on"></span><span class="bit"></span><span class="bit on"></span><span class="bit on"></span>
+          <span class="bit"></span><span class="bit on"></span><span class="bit"></span><span class="bit on"></span>
+        </span>
+        <span>QuantaStream</span>
+      </a>
+      <nav class="top-actions" aria-label="Primary navigation">
+        <a class="pill" href="index.html" data-localized-link data-i18n="homeLink">Home</a>
+        <a class="pill" href="news.html" data-localized-link data-i18n="newsLink">News</a>
+        <a class="pill" href="whitepaper.html" data-localized-link data-i18n="whitepaperLink">White paper</a>
+        <a class="pill" href="contact.html" data-localized-link data-i18n="contactLink">Contact</a>
+        <a class="pill" href="https://github.com/QuantaStream/quantastream">GitHub</a>
+        <button class="lang-toggle" type="button" data-lang-toggle aria-label="Cambiar idioma a español"><span class="flag-icon flag-cr" aria-hidden="true"></span><span>Español</span></button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="kicker" data-i18n="kicker">FAQ</p>
+        <h1 data-i18n="title">Practical answers.</h1>
+        <p class="lede" data-i18n="lede">A quick pass over what QuantaStream is, where it fits, and how to try the public preview.</p>
+      </section>
+
+      <section class="grid" id="faq-list" aria-live="polite"></section>
+    </main>
+
+    <footer data-i18n="footer">QuantaStream · Bitmap-native analytical SQL</footer>
+  </div>
+
+  <script src="assets/faq-data.js"></script>
+  <script>
+    window.quantastreamPageTranslations = {
+      en: {
+        homeLink: "Home",
+        newsLink: "News",
+        whitepaperLink: "White paper",
+        contactLink: "Contact",
+        kicker: "FAQ",
+        title: "Practical answers.",
+        lede: "A quick pass over what QuantaStream is, where it fits, and how to try the public preview.",
+        footer: "QuantaStream · Bitmap-native analytical SQL",
+        toggleLabel: "<span class=\"flag-icon flag-cr\" aria-hidden=\"true\"></span><span>Español</span>",
+        toggleAria: "Cambiar idioma a español"
+      },
+      es: {
+        homeLink: "Inicio",
+        newsLink: "Noticias",
+        whitepaperLink: "White paper",
+        contactLink: "Contacto",
+        kicker: "FAQ",
+        title: "Respuestas prácticas.",
+        lede: "Un repaso rápido de qué es QuantaStream, dónde encaja y cómo probar el public preview.",
+        footer: "QuantaStream · SQL analítico nativo de bitmaps",
+        toggleLabel: "<span class=\"flag-icon flag-us\" aria-hidden=\"true\"></span><span>English</span>",
+        toggleAria: "Switch language to English"
+      }
+    };
+
+    window.renderPageContent = function renderPageContent(language) {
+      const list = document.getElementById("faq-list");
+      const entries = (window.quantastreamFaq && window.quantastreamFaq[language]) || window.quantastreamFaq.en;
+      list.innerHTML = entries.map((entry) => `
+        <article class="item">
+          <h2>${entry.question}</h2>
+          <p>${entry.answer}</p>
+        </article>
+      `).join("");
+    };
+  </script>
+  <script src="assets/page-common.js"></script>
+</body>
+</html>
