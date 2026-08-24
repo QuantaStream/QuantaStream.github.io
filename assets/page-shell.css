@@ -267,6 +267,10 @@ h1 {
   border: 1px solid var(--line);
 }
 
+.button.release-link {
+  margin-left: auto;
+}
+
 .contact-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
@@ -350,6 +354,10 @@ footer {
 
   .top-actions {
     justify-content: flex-start;
+  }
+
+  .button.release-link {
+    margin-left: 0;
   }
 
   .hero {

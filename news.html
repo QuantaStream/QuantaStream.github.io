@@ -82,9 +82,18 @@
       const list = document.getElementById("news-list");
       const entries = (window.quantastreamNews && window.quantastreamNews[language]) || window.quantastreamNews.en;
       list.innerHTML = entries.map((entry) => {
-        const links = entry.links.map((link, index) => `
-          <a class="button ${index === 0 ? "" : "secondary"}" href="${localizedHref(link.href, language)}">${link.label}</a>
-        `).join("");
+        const links = entry.links.map((link) => {
+          const classes = ["button"];
+          if (link.style !== "primary") {
+            classes.push("secondary");
+          }
+          if (link.align === "right") {
+            classes.push("release-link");
+          }
+          return `
+            <a class="${classes.join(" ")}" href="${localizedHref(link.href, language)}">${link.label}</a>
+          `;
+        }).join("");
         return `
           <article class="item">
             <p class="meta">${entry.label} · ${entry.date}</p>
