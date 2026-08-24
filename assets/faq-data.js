@@ -5,6 +5,10 @@ window.quantastreamFaq = {
       answer: "QuantaStream is a bitmap-native analytical SQL engine. It exposes a MySQL-compatible front door while executing analytical workloads over compressed bitmap domains, bit-sliced values, and relationship vectors."
     },
     {
+      question: "Is it solid?",
+      answer: "QuantaStream is a young public preview, but it is not a toy. Excluding generated protobuf code, the project has 278,429 lines of Go, including 108,630 lines dedicated to Go test cases. Beyond unit tests, SQLRunner exercises end-to-end SQL behavior across query shapes, mutations, views, CTEs, temporary and derived tables, CTAS, prepared statements, metadata, text search, and runtime inspection. The MySQL compatibility suites run reference cases against MySQL and compare QuantaStream as the target so compatibility changes are caught directly."
+    },
+    {
       question: "Is QuantaStream a MySQL replacement?",
       answer: "It is MySQL-compatible where that surface helps users connect familiar clients and tools. It is not trying to be a byte-for-byte MySQL clone. Schemas are descriptor-driven, and the engine is optimized around bitmap-native analytical execution."
     },
@@ -41,6 +45,10 @@ window.quantastreamFaq = {
     {
       question: "¿Qué es QuantaStream?",
       answer: "QuantaStream es un motor de SQL analítico nativo de bitmaps. Expone una puerta de entrada compatible con MySQL mientras ejecuta cargas analíticas sobre dominios de bitmaps comprimidos, valores bit-sliced y vectores de relación."
+    },
+    {
+      question: "¿Es sólido?",
+      answer: "QuantaStream es un public preview joven, pero no es un juguete. Excluyendo código protobuf generado, el proyecto tiene 278,429 líneas de Go, incluyendo 108,630 líneas dedicadas a casos de prueba en Go. Además de unit tests, SQLRunner ejercita comportamiento SQL de extremo a extremo sobre formas de consulta, mutaciones, views, CTEs, tablas temporales y derivadas, CTAS, prepared statements, metadatos, búsqueda de texto e inspección de runtime. Las suites de compatibilidad MySQL ejecutan casos de referencia contra MySQL y comparan QuantaStream como target para detectar cambios de compatibilidad directamente."
     },
     {
       question: "¿QuantaStream reemplaza a MySQL?",
