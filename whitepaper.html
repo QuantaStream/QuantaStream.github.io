@@ -329,6 +329,15 @@ rehydrated only after the candidate sets have already been narrowed.</p>
 <p>This is the core distinction: QuantaStream is not a row engine with
 bitmap indexes bolted on. It is a bitmap-domain execution engine with a
 SQL front end.</p>
+<p>QuantaStream uses native bitmap and bit-sliced indexes whose storage
+and processing costs scale predictably with indexed cardinality and data
+volume. This design is particularly effective for filtering,
+aggregation, and set-oriented analysis common in streaming analytics.
+Unlike architectures centered on row lookup, compaction, or repeated
+column scans, QuantaStream can combine filters and relationships directly
+through bitmap algebra, defer row materialization until results are
+needed, and reuse the same indexed representation for ingestion and
+interactive queries.</p>
 <p>That thesis is now backed by a more complete first-release posture: a
 single-node engine with a MySQL-compatible endpoint, descriptor-driven
 schemas, views, derived tables, temporary tables, CTAS materialization,
@@ -809,6 +818,16 @@ candidatos ya se han reducido.</p>
 <p>Esa es la distinción central: QuantaStream no es un motor de filas
 con índices bitmap añadidos encima. Es un motor de ejecución sobre
 dominios bitmap con una interfaz SQL.</p>
+<p>QuantaStream utiliza bitmaps nativos e índices bit-sliced cuyos costos
+de almacenamiento y procesamiento escalan de manera predecible con la
+cardinalidad indexada y el volumen de datos. Este diseño es especialmente
+eficaz para filtrado, agregación y análisis orientado a conjuntos, comunes
+en la analítica de streaming. A diferencia de arquitecturas centradas en
+búsquedas de filas, compactación o escaneos repetidos de columnas,
+QuantaStream puede combinar filtros y relaciones directamente mediante
+álgebra de bitmaps, aplazar la materialización de filas hasta que se
+necesiten los resultados y reutilizar la misma representación indexada
+para ingestión y consultas interactivas.</p>
 <p>Esa tesis ahora está respaldada por una postura de primera versión más
 completa: un motor de nodo único con endpoint compatible con MySQL,
 esquemas declarativos, views, tablas derivadas, tablas temporales,
