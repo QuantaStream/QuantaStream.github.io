@@ -1,6 +1,25 @@
 window.quantastreamNews = {
   en: [
     {
+      date: "2026-09-03",
+      label: "Release",
+      title: "QuantaStream 0.1.1 is available",
+      summary: "QuantaStream 0.1.1 delivers initial Tableau support, a stronger single-node experience, safer durability behavior, and broader MySQL-compatible metadata and SQL coverage. The Linux AMD64 bundle includes a restorable TPC-H sample and a copy-paste getting started path.",
+      links: [
+        { label: "Get Started", href: "https://github.com/QuantaStream/quantastream#download-quantastream", style: "primary" },
+        { label: "Release notes", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.1", align: "right" }
+      ]
+    },
+    {
+      date: "2026-09-03",
+      label: "Preview",
+      title: "The QuantaStream migration workbench is now in preview",
+      summary: "qstream-migrate analyzes an existing MySQL database, produces a reviewable migration plan, recommends QuantaStream mappings, generates schema files, exports and loads data, and validates the result. It is an early preview intended for hands-on evaluation and feedback.",
+      links: [
+        { label: "Explore qstream-migrate", href: "https://github.com/QuantaStream/qstream-migrate", style: "primary" }
+      ]
+    },
+    {
       date: "2026-08-24",
       label: "Release",
       title: "QuantaStream 0.1.0 public preview is available",
@@ -13,6 +32,25 @@ window.quantastreamNews = {
     }
   ],
   es: [
+    {
+      date: "2026-09-03",
+      label: "Lanzamiento",
+      title: "QuantaStream 0.1.1 ya está disponible",
+      summary: "QuantaStream 0.1.1 ofrece soporte inicial para Tableau, una experiencia mejorada en un solo nodo, mayor seguridad en la durabilidad y una cobertura más amplia de metadatos y SQL compatibles con MySQL. El paquete Linux AMD64 incluye una muestra restaurable de TPC-H y una guía de inicio lista para copiar y pegar.",
+      links: [
+        { label: "Comenzar", href: "https://github.com/QuantaStream/quantastream#download-quantastream", style: "primary" },
+        { label: "Notas de la versión", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.1", align: "right" }
+      ]
+    },
+    {
+      date: "2026-09-03",
+      label: "Preview",
+      title: "El workbench de migración de QuantaStream está disponible en preview",
+      summary: "qstream-migrate analiza una base de datos MySQL existente, produce un plan de migración revisable, recomienda mapeos de QuantaStream, genera esquemas, exporta y carga datos, y valida el resultado. Es una versión preliminar para evaluación práctica y comentarios.",
+      links: [
+        { label: "Explorar qstream-migrate", href: "https://github.com/QuantaStream/qstream-migrate", style: "primary" }
+      ]
+    },
     {
       date: "2026-08-24",
       label: "Lanzamiento",

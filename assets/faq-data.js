@@ -14,7 +14,7 @@ window.quantastreamFaq = {
     },
     {
       question: "How do I try it?",
-      answer: "Download the v0.1.0 Linux AMD64 release bundle from GitHub and follow the getting started guide. Users on Mac, ARM, or other platforms can build from source with Go installed."
+      answer: "Download the v0.1.1 Linux AMD64 release bundle from GitHub and follow the getting started guide. Users on Mac, ARM, or other platforms can build from source with Go installed."
     },
     {
       question: "What workloads fit QuantaStream?",
@@ -25,12 +25,12 @@ window.quantastreamFaq = {
       answer: "It means predicates, joins, relationship traversal, and reductions are expressed as set algebra over compressed bitmap domains where possible. Row materialization happens late, after the engine has reduced the candidate set."
     },
     {
-      question: "What ships in 0.1.0?",
+      question: "What ships in 0.1.1?",
       answer: "The public preview includes the single-node server, qstream-admin, a MySQL-compatible endpoint, prepared-statement support, views, CTEs, derived and temporary tables, CTAS, backup and restore, support bundles, a JSON streaming loader, and a bundled sample data restore path."
     },
     {
       question: "Does QuantaStream support distributed execution?",
-      answer: "The repository includes distributed-mode code and operational scripts, and distributed TPC-H runs have been used for benchmark validation. The 0.1.0 quick-start path is intentionally focused on the single-node engine."
+      answer: "The repository includes distributed-mode code and operational scripts, and distributed TPC-H runs have been used for benchmark validation. The 0.1.1 quick-start path is intentionally focused on the single-node engine."
     },
     {
       question: "Can I use existing MySQL clients?",
@@ -56,7 +56,7 @@ window.quantastreamFaq = {
     },
     {
       question: "¿Cómo lo pruebo?",
-      answer: "Descarga el paquete Linux AMD64 v0.1.0 desde GitHub y sigue la guía de inicio. Los usuarios de Mac, ARM u otras plataformas pueden compilar desde el código fuente con Go instalado."
+      answer: "Descarga el paquete Linux AMD64 v0.1.1 desde GitHub y sigue la guía de inicio. Los usuarios de Mac, ARM u otras plataformas pueden compilar desde el código fuente con Go instalado."
     },
     {
       question: "¿Qué cargas funcionan bien en QuantaStream?",
@@ -67,12 +67,12 @@ window.quantastreamFaq = {
       answer: "Significa que predicados, joins, recorrido de relaciones y reducciones se expresan como álgebra de conjuntos sobre dominios de bitmaps comprimidos cuando es posible. La materialización de filas ocurre tarde, después de reducir el conjunto candidato."
     },
     {
-      question: "¿Qué incluye 0.1.0?",
+      question: "¿Qué incluye 0.1.1?",
       answer: "El public preview incluye el servidor de un solo nodo, qstream-admin, endpoint compatible con MySQL, soporte de prepared statements, views, CTEs, tablas derivadas y temporales, CTAS, backup y restore, support bundles, cargador JSON para streaming y un camino de restore con datos de muestra."
     },
     {
       question: "¿QuantaStream soporta ejecución distribuida?",
-      answer: "El repositorio incluye código de modo distribuido y scripts operacionales, y las corridas distribuidas de TPC-H se han usado para validar benchmarks. El camino rápido de 0.1.0 está enfocado intencionalmente en el motor de un solo nodo."
+      answer: "El repositorio incluye código de modo distribuido y scripts operacionales, y las corridas distribuidas de TPC-H se han usado para validar benchmarks. El camino rápido de 0.1.1 está enfocado intencionalmente en el motor de un solo nodo."
     },
     {
       question: "¿Puedo usar clientes MySQL existentes?",
