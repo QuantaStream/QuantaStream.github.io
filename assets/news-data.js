@@ -3,11 +3,21 @@ window.quantastreamNews = {
     {
       date: "2026-09-04",
       label: "Release",
+      title: "QuantaStream 0.1.3 connects every path to a useful evaluation",
+      summary: "Whether you arrive from the website, GitHub, a release post, or an extracted bundle, QuantaStream 0.1.3 now leads to one coherent choice: run a first query, migrate a small MySQL analytical model, or connect Tableau through the validated JDBC path. The getting-started guide is self-contained from prerequisites and download through the first query.",
+      links: [
+        { label: "Choose an evaluation", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", style: "primary" },
+        { label: "Release notes", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.3", align: "right" }
+      ]
+    },
+    {
+      date: "2026-09-04",
+      label: "Release",
       title: "QuantaStream 0.1.2 makes BI evaluation easier",
       summary: "QuantaStream 0.1.2 is the recommended release for hands-on evaluation: run a first query from the bundled sample, bring over a small MySQL analytical model, or connect Tableau through the validated JDBC path. The release also makes authentication choices explicit and safer for anyone moving beyond an isolated local trial.",
       links: [
-        { label: "Download 0.1.2", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.2", style: "primary" },
-        { label: "Evaluate", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", align: "right" }
+        { label: "Evaluate", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", style: "primary" },
+        { label: "Download 0.1.2", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.2", align: "right" }
       ]
     },
     {
@@ -45,11 +55,21 @@ window.quantastreamNews = {
     {
       date: "2026-09-04",
       label: "Lanzamiento",
+      title: "QuantaStream 0.1.3 conecta cada camino con una evaluación útil",
+      summary: "Ya sea que llegues desde el sitio web, GitHub, una publicación o un paquete extraído, QuantaStream 0.1.3 conduce a una elección coherente: ejecutar una primera consulta, migrar un pequeño modelo analítico de MySQL o conectar Tableau mediante la ruta JDBC validada. La guía de inicio ahora cubre todo el proceso desde los requisitos y la descarga hasta la primera consulta.",
+      links: [
+        { label: "Elegir una evaluación", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", style: "primary" },
+        { label: "Notas de la versión", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.3", align: "right" }
+      ]
+    },
+    {
+      date: "2026-09-04",
+      label: "Lanzamiento",
       title: "QuantaStream 0.1.2 facilita la evaluación con herramientas de BI",
       summary: "QuantaStream 0.1.2 es la versión recomendada para una evaluación práctica: ejecuta una primera consulta con la muestra incluida, migra un pequeño modelo analítico de MySQL o conecta Tableau mediante la ruta JDBC validada. La versión también hace explícitas y más seguras las opciones de autenticación al pasar de una prueba local aislada a otros entornos.",
       links: [
-        { label: "Descargar 0.1.2", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.2", style: "primary" },
-        { label: "Evaluar", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", align: "right" }
+        { label: "Evaluar", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", style: "primary" },
+        { label: "Descargar 0.1.2", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.2", align: "right" }
       ]
     },
     {
