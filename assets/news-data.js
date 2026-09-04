@@ -1,6 +1,16 @@
 window.quantastreamNews = {
   en: [
     {
+      date: "2026-09-04",
+      label: "Security",
+      title: "QuantaStream 0.1.2 requires an explicit authentication posture",
+      summary: "QuantaStream 0.1.2 removes implicit permissive authentication. Local evaluation must opt into permissive mode on a loopback bind; networked operation must use static authentication with configured credentials. The release also makes this boundary explicit throughout the startup and deployment guidance.",
+      links: [
+        { label: "Download 0.1.2", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.2", style: "primary" },
+        { label: "Evaluate", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", align: "right" }
+      ]
+    },
+    {
       date: "2026-09-03",
       label: "Release",
       title: "QuantaStream 0.1.1 is available",
@@ -32,6 +42,16 @@ window.quantastreamNews = {
     }
   ],
   es: [
+    {
+      date: "2026-09-04",
+      label: "Seguridad",
+      title: "QuantaStream 0.1.2 requiere una postura de autenticación explícita",
+      summary: "QuantaStream 0.1.2 elimina la autenticación permisiva implícita. La evaluación local debe habilitar el modo permisivo sobre una dirección loopback; la operación en red debe usar autenticación estática con credenciales configuradas. La guía de inicio y despliegue ahora explica este límite de forma explícita.",
+      links: [
+        { label: "Descargar 0.1.2", href: "https://github.com/QuantaStream/quantastream/releases/tag/v0.1.2", style: "primary" },
+        { label: "Evaluar", href: "https://github.com/QuantaStream/quantastream/blob/main/docs/EVALUATE.md", align: "right" }
+      ]
+    },
     {
       date: "2026-09-03",
       label: "Lanzamiento",
